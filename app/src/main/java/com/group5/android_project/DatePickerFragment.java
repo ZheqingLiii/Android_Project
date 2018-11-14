@@ -35,8 +35,10 @@ public class DatePickerFragment extends DialogFragment {
         String date;
         if (VehicleProfileActivity.flag.equals("startDate")) {
             date = vehicleProfileActivity.txtStartDate.getText().toString();
-        } else {
+        } else if (VehicleProfileActivity.flag.equals("endDate")) {
             date = vehicleProfileActivity.txtEndDate.getText().toString();
+        } else {
+            return new DatePickerDialog(getActivity(), listener, year, month, day);
         }
 
         int nday = Integer.valueOf(date.substring(0, 2));

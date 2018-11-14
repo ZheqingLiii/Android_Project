@@ -33,10 +33,13 @@ public class TimePickerFragment extends DialogFragment {
 
         //input default date
         String time;
-        if (VehicleProfileActivity.flag.equals("startDate")) {
+        if (VehicleProfileActivity.flag.equals("startTime")) {
             time = vehicleProfileActivity.txtStartTime.getText().toString();
-        } else {
+        } else if (VehicleProfileActivity.flag.equals("endTime")) {
             time = vehicleProfileActivity.txtEndTime.getText().toString();
+        } else {
+            return new TimePickerDialog(getActivity(), listener, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
         }
 
         int nhour = Integer.valueOf(time.substring(0, 2));

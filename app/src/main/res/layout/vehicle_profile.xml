@@ -7,6 +7,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
 
@@ -39,6 +41,7 @@
                 android:id="@+id/txtModel"
                 android:layout_width="175dp"
                 android:layout_height="wrap_content"
+                android:maxLength="30"
                 android:inputType="text" />
 
             <TextView
@@ -54,6 +57,7 @@
                 android:id="@+id/txtYear"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
+                android:maxLength="4"
                 android:inputType="numberSigned" />
         </LinearLayout>
 
@@ -78,6 +82,8 @@
                 android:id="@+id/txtCity"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
+                android:maxLength="20"
+                android:maxLines="1"
                 android:lines="1" />
 
         </LinearLayout>
@@ -223,6 +229,7 @@
                 android:layout_height="wrap_content"
                 android:lines="4"
                 android:maxLines="7"
+                android:maxLength="200"
                 android:minLines="1" />
         </LinearLayout>
 
@@ -233,6 +240,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="2dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:gravity="right"
             android:orientation="horizontal">
 

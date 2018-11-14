@@ -166,7 +166,7 @@ public class VehicleProfileActivity extends AppCompatActivity
             nminute = Integer.toString(minute);
         }
 
-        String resultTime = nhour + ":" + minute;
+        String resultTime = nhour + ":" + nminute;
         if (flag.equals("startTime")) {
             txtStartTime.setText(resultTime);
         } else if (flag.equals("endTime")) {
