@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,10 @@ public class VehicleProfileActivity extends AppCompatActivity
     private EditText txtDetail;
     private Vehicle profileVehicle;
 
+    int images[] = {R.drawable.car_default, R.drawable.car_default};
+    ImageSliderPagerAdapter imageSlider;
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,10 @@ public class VehicleProfileActivity extends AppCompatActivity
         Button btnSetEnd = findViewById(R.id.btnSetEndDate);
         Button btnStartTime = findViewById(R.id.btnStartTime);
         Button btnEndTime = findViewById(R.id.btnEndTime);
+        viewPager = findViewById(R.id.veImage_viewPager);
+
+        imageSlider = new ImageSliderPagerAdapter(this, images);
+        viewPager.setAdapter(imageSlider);
 
         //get values from intent
         profileVehicle = getIntent().getParcelableExtra("vehicle");
