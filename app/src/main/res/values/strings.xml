@@ -15,6 +15,7 @@
     <!-- Strings related to profile -->
     <string name="user_first_name">First Name:</string>
     <string name="user_last_name">Last Name:</string>
+    <string name="hello">Hello</string>
 
     <!-- Strings related to login -->
     <string name="title_activity_login">Sign in</string>
@@ -28,6 +29,17 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- Vehicle Profile-->
+    <string name="model">Model</string>
+    <string name="year">Year</string>
+    <string name="city">City</string>
+    <string name="detail">Detail</string>
+    <string name="availStartDate">Start Time</string>
+    <string name="availEndDate">End Time</string>
+    <string name="setDate">Set Date</string>
+    <string name="setTime">Set Time</string>
+    <string name="save">Save</string>
 
 
 </resources>
