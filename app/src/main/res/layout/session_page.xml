@@ -9,7 +9,7 @@
         android:id="@+id/registrationLogo"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/Logo"
+        android:src="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 

@@ -4,5 +4,5 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <!-- #efffff -->
-    <color name="background">@drawable/gradient</color>
+    <color name="background">#efffff</color>
 </resources>
