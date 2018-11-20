@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/background"
     android:padding="16dp">
 
     <!-- TODO: Replace with logo later... -->
     <ImageView
         android:id="@+id/registrationLogo"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/menu_profile"
+        android:src="@drawable/Logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -56,6 +57,8 @@
         android:layout_marginTop="16dp"
         android:text="Sign In"
         android:textStyle="bold"
+        android:background="#2e3adf"
+        android:textColor="@android:color/white"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
