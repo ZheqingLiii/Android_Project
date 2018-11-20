@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SessionPageFragment extends Fragment {
+public class SessionActivity extends AppCompatActivity {
     final String signIn = "Sign In";
     final String signUp = "Sign Up";
     final String TAG = "PmdLogTag";
@@ -30,22 +31,20 @@ public class SessionPageFragment extends Fragment {
     AutoCompleteTextView emailAutoCompleteTextView;
     EditText passwordEditText;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.session_page, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.session_page);
 
-        setUpElements(view);
-
-        return view;
+        setUpElements();
     }
 
-    void setUpElements(View view) {
-        changeActionButton = (TextView) view.findViewById(R.id.changeActionButton);
-        actionButton = (Button) view.findViewById(R.id.actionButton);
+    void setUpElements() {
+        changeActionButton = (TextView) findViewById(R.id.changeActionButton);
+        actionButton = (Button) findViewById(R.id.actionButton);
         firebaseAuth = FirebaseAuth.getInstance();
-        emailAutoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.email);
-        passwordEditText = (EditText) view.findViewById(R.id.password);
+        emailAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.email);
+        passwordEditText = (EditText) findViewById(R.id.password);
 
         changeActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +90,7 @@ public class SessionPageFragment extends Fragment {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             // TODO: Redirect...
 //            updateUI(user);
+            Toast.makeText(this, "Logged In", Toast.LENGTH_SHORT).show();
         } else {
             // If sign in fails, display a message to the user.
             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -98,6 +98,7 @@ public class SessionPageFragment extends Fragment {
 //            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
 //                    Toast.LENGTH_SHORT).show();
 //            updateUI(null);
+            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
         }
     }
 }

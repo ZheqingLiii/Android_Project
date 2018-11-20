@@ -19,13 +19,13 @@
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivityOLD"
-            android:label="@string/title_activity_login"></activity>
+            android:name=".SessionActivity"
+            android:label="@string/title_session_page">
+        </activity>
         <activity android:name=".VehicleProfileActivity" />
     </application>
 
