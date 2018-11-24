@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/hello"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="25sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:text="FirstName"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="25sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </android.support.v7.widget.LinearLayoutCompat>
 
