@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.group5.android_project.fragment.ProfileFragment">
+    tools:context="com.group5.android_project.fragment.ProfileFragment"
+    android:background="@color/background">
 
 
     <LinearLayout
@@ -11,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -22,14 +23,15 @@
                 android:id="@+id/userImageView"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:src="@drawable/profile_default" />
 
             <android.support.v7.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_toRightOf="@id/userImageView"
                 android:orientation="vertical">
 
                 <TextView
@@ -49,7 +51,16 @@
                     android:textSize="25sp"
                     android:textStyle="bold" />
             </android.support.v7.widget.LinearLayoutCompat>
-        </LinearLayout>
+
+            <Button
+                android:id="@+id/signOutButton"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Sign Out"
+                android:layout_marginRight="20dp"
+                android:textSize="12sp" />
+        </RelativeLayout>
 
         <ListView
             android:id="@+id/lvVehicleListView"

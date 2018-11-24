@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +18,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.group5.android_project.R;
-import com.group5.android_project.UserOLD;
+import com.group5.android_project.SessionActivity;
+import com.group5.android_project.SplashActivity;
 import com.group5.android_project.VehicleAdapter;
 import com.group5.android_project.Vehicle;
 import com.group5.android_project.VehicleProfileActivity;
@@ -32,6 +34,7 @@ public class ProfileFragment extends Fragment {
     FirebaseUser user;
     ImageView userImage;
     VehicleAdapter adapter;
+    Button signOutButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,15 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_profile, container, false);
+        signOutButton = v.findViewById(R.id.signOutButton);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.signOut();
+                startActivity(new Intent(getActivity(), SplashActivity.class));
+            }
+        });
         return v;
     }
 
