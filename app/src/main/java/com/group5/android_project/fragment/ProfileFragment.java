@@ -13,8 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.group5.android_project.R;
-import com.group5.android_project.User;
+import com.group5.android_project.UserOLD;
 import com.group5.android_project.VehicleAdapter;
 import com.group5.android_project.Vehicle;
 import com.group5.android_project.VehicleProfileActivity;
@@ -26,14 +29,14 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
     public static ArrayList<Vehicle> vehicleList;
-    public User user;
+    FirebaseUser user;
     ImageView userImage;
     VehicleAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        populateUserInfo();
+        setUser();
         populateVehicleInfo();
     }
 
@@ -44,14 +47,9 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
-    public void populateUserInfo() {
-
-        //sample
-        String firstName = "FirstName";
-        String lastName = "LastName";
-        user = new User(firstName, lastName);
-        user.setImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPR3s2vhWcPNvbnKdsKa4Fe1S-G2bu1qPKPOSg9cNfr-jCXH_pcQ");
-
+    public void setUser() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+//        user.setImageUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPR3s2vhWcPNvbnKdsKa4Fe1S-G2bu1qPKPOSg9cNfr-jCXH_pcQ");
     }
 
     public void populateVehicleInfo() {
@@ -86,10 +84,10 @@ public class ProfileFragment extends Fragment {
         userImage = v.findViewWithTag(R.id.userImageView);
         ListView vehicleListView = v.findViewById(R.id.lvVehicleListView);
 
-        firstName.setText(user.getFirstName());
+        firstName.setText(user.getDisplayName());
         try {
             //TODO
-            Picasso.with(v.getContext()).load(user.getImageUrl()).into(userImage);
+            Picasso.with(v.getContext()).load(user.getPhotoUrl()).into(userImage);
         } catch (Exception e) {
             Log.d(TAG, " user image null");
         }

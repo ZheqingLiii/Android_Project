@@ -1,16 +1,14 @@
 package com.group5.android_project;
 
-public class User {
+public class UserOLD {
     private String userId;
-    private String firstName;
-    private String lastName;
+    private String displayName;
     private String email;
     private String password;
     private String imageUrl;
 
-    public User(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public UserOLD(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getUserId() {
@@ -21,20 +19,12 @@ public class User {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return this.firstName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getEmail() {

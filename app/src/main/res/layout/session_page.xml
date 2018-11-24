@@ -4,7 +4,6 @@
     android:background="@color/background"
     android:padding="16dp">
 
-    <!-- TODO: Replace with logo later... -->
     <ImageView
         android:id="@+id/registrationLogo"
         android:layout_width="100dp"
@@ -12,6 +11,16 @@
         android:src="@drawable/logo"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:layout_below="@id/registrationLogo"
+        android:visibility="gone" />
 
     <AutoCompleteTextView
         android:id="@+id/email"
@@ -21,7 +30,7 @@
         android:inputType="textEmailAddress"
         android:maxLines="1"
         android:singleLine="true"
-        android:layout_below="@id/registrationLogo"/>
+        android:layout_below="@id/name"/>
 
     <EditText
         android:id="@+id/password"

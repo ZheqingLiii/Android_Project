@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SessionActivity extends AppCompatActivity {
     final String signIn = "Sign In";
@@ -29,7 +30,7 @@ public class SessionActivity extends AppCompatActivity {
     TextView changeActionButton;
     Button actionButton;
     AutoCompleteTextView emailAutoCompleteTextView;
-    EditText passwordEditText;
+    EditText passwordEditText, nameEditText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class SessionActivity extends AppCompatActivity {
         changeActionButton = (TextView) findViewById(R.id.changeActionButton);
         actionButton = (Button) findViewById(R.id.actionButton);
         firebaseAuth = FirebaseAuth.getInstance();
+        nameEditText = (EditText) findViewById(R.id.name);
         emailAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.email);
         passwordEditText = (EditText) findViewById(R.id.password);
 
@@ -52,9 +54,11 @@ public class SessionActivity extends AppCompatActivity {
                 if (actionButton.getText() == signIn) {
                     changeActionButton.setText(signIn);
                     actionButton.setText(signUp);
+                    nameEditText.setVisibility(View.VISIBLE);
                 } else {
                     changeActionButton.setText(signUp);
                     actionButton.setText(signIn);
+                    nameEditText.setVisibility(View.GONE);
                 }
             }
         });
@@ -62,6 +66,7 @@ public class SessionActivity extends AppCompatActivity {
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // SIGN IN USER
                 if (actionButton.getText() == signIn) {
                     firebaseAuth.signInWithEmailAndPassword(emailAutoCompleteTextView.getText().toString(), passwordEditText.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -70,11 +75,13 @@ public class SessionActivity extends AppCompatActivity {
                                 handleAuthResult(task);
                             }
                         });
+                // SIGN UP USER
                 } else {
                     firebaseAuth.createUserWithEmailAndPassword(emailAutoCompleteTextView.getText().toString(), passwordEditText.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
+                                updateName();
                                 handleAuthResult(task);
                             }
                         });
@@ -99,6 +106,24 @@ public class SessionActivity extends AppCompatActivity {
 //                    Toast.LENGTH_SHORT).show();
 //            updateUI(null);
             Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void updateName() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(nameEditText.getText().toString().trim())
+                    .build();
+
+            user.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        Log.d("TESTING", "User profile updated");
+                    }
+                }
+            });
         }
     }
 }
