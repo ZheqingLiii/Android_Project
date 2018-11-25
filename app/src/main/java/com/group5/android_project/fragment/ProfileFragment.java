@@ -68,7 +68,7 @@ public class ProfileFragment extends Fragment {
 
         //sample
         vehicleList = new ArrayList<Vehicle>();
-        Vehicle car1 = new Vehicle("Toyota Camry", "2018", "San Jose",
+        Vehicle car1 = new Vehicle("Toyota Camry", "2018", "San Jose", "122",
                 "22 MPG, Regular Gas, 2 doors, 4 seats, Automatic transmission, Audio input, Convertible, USB input, Heated seats");
         car1.setStartDate("01/01/2018");
         car1.setEndDate("05/01/2018");
@@ -77,7 +77,7 @@ public class ProfileFragment extends Fragment {
         car1.setImageUrl("https://crdms.images.consumerreports.org/c_lfill,w_480/prod/cars/cr/model-years/8073-2018-toyota-camry");
         vehicleList.add(car1);
 
-        Vehicle car2 = new Vehicle("Toyota Camry", "2014", "Santa Clara",
+        Vehicle car2 = new Vehicle("Toyota Camry", "2014", "Santa Clara", "234",
                 "22 MPG, Regular Gas, 2 doors, 4 seats, Automatic transmission, Audio input, Convertible, USB input, Heated seats");
         car2.setStartDate("02/02/2018");
         car2.setEndDate("02/02/2019");
@@ -97,6 +97,7 @@ public class ProfileFragment extends Fragment {
         ListView vehicleListView = v.findViewById(R.id.lvVehicleListView);
 
         firstName.setText(user.getDisplayName());
+        //firstName.setText("Username");
         try {
             //TODO
             Picasso.with(v.getContext()).load(user.getPhotoUrl()).into(userImage);
