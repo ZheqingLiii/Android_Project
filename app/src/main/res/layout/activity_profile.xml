@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.group5.android_project.fragment.ProfileFragment"
-    android:background="@color/background">
+    android:background="@color/colorPrimary">
 
 
     <LinearLayout
@@ -50,6 +50,7 @@
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
             </android.support.v7.widget.LinearLayoutCompat>
 
             <Button
