@@ -6,10 +6,8 @@
 
 
     <!-- Strings related to post -->
-    <string name="car_type">Type:</string>
-    <string name="price">Price:</string>
-    <string name="date">Date:</string>
-    <string name="description">Description:</string>
+    <string name="price">Price $</string>
+    <string name="submit">Submit</string>
 
 
     <!-- Strings related to profile -->

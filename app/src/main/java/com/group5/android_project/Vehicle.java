@@ -20,20 +20,23 @@ public class Vehicle implements Parcelable {
         }
 
     };
+
     private String model;
     private String year;
     private String city;
     private String detail;
+    private String price;
     private String startDate;
     private String endDate;
     private String startTime;
     private String endTime;
     private String imageUrl;
 
-    public Vehicle(String model, String year, String city, String detail) {
+    public Vehicle(String model, String year, String city, String price, String detail) {
         this.model = model;
         this.year = year;
         this.city = city;
+        this.price = price;
         this.detail = detail;
     }
 
@@ -41,6 +44,7 @@ public class Vehicle implements Parcelable {
         model = source.readString();
         year = source.readString();
         city = source.readString();
+        price = source.readString();
         detail = source.readString();
         startDate = source.readString();
         endDate = source.readString();
@@ -54,6 +58,7 @@ public class Vehicle implements Parcelable {
         dest.writeString(model);
         dest.writeString(year);
         dest.writeString(city);
+        dest.writeString(price);
         dest.writeString(detail);
         dest.writeString(startDate);
         dest.writeString(endDate);
@@ -89,6 +94,14 @@ public class Vehicle implements Parcelable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getDetail() {

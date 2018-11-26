@@ -32,6 +32,7 @@ public class VehicleProfileActivity extends AppCompatActivity
     private EditText txtModel;
     private EditText txtYear;
     private EditText txtCity;
+    private EditText txtPrice;
     private EditText txtDetail;
     private Vehicle profileVehicle;
 
@@ -47,6 +48,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         txtModel = findViewById(R.id.txtModel);
         txtYear = findViewById(R.id.txtYear);
         txtCity = findViewById(R.id.txtCity);
+        txtPrice = findViewById(R.id.txtPrice);
         txtDetail = findViewById(R.id.txtDetail);
         txtStartDate = findViewById(R.id.selectedStartDate);
         txtEndDate = findViewById(R.id.selectedEndDate);
@@ -68,6 +70,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         txtModel.setText(profileVehicle.getModel());
         txtYear.setText(profileVehicle.getYear());
         txtCity.setText(profileVehicle.getCity());
+        txtPrice.setText(profileVehicle.getPrice());
         txtDetail.setText(profileVehicle.getDetail());
         txtStartDate.setText(profileVehicle.getStartDate());
         txtEndDate.setText(profileVehicle.getEndDate());
@@ -203,6 +206,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                             String model = txtModel.getText().toString();
                             String year = txtYear.getText().toString();
                             String city = txtCity.getText().toString();
+                            String price = txtPrice.getText().toString();
                             String detail = txtDetail.getText().toString();
                             String startDate = txtStartDate.getText().toString();
                             String endDate = txtEndDate.getText().toString();
@@ -212,6 +216,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                             ProfileFragment.vehicleList.get(i).setModel(model);
                             ProfileFragment.vehicleList.get(i).setYear(year);
                             ProfileFragment.vehicleList.get(i).setCity(city);
+                            ProfileFragment.vehicleList.get(i).setPrice(price);
                             ProfileFragment.vehicleList.get(i).setDetail(detail);
                             ProfileFragment.vehicleList.get(i).setStartDate(startDate);
                             ProfileFragment.vehicleList.get(i).setEndDate(endDate);
