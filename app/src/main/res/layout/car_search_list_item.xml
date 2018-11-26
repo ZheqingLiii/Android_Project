@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="36dp">
+
+    <ImageView
+        android:id="@+id/carImage"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="Price.../day"
+        android:layout_alignBottom="@id/carImage"
+        android:layout_alignRight="@id/carImage"/>
+
+    <TextView
+        android:id="@+id/carName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/carImage"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:text="Car Name..." />
+
+</RelativeLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android_Project</string>
+    <string name="app_name">Rent My Car</string>
     <string name="menu_search">Search</string>
     <string name="menu_post">Add</string>
     <string name="menu_profile">Profile</string>
