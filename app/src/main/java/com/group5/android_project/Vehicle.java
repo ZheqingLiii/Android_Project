@@ -31,6 +31,7 @@ public class Vehicle implements Parcelable {
     private String startTime;
     private String endTime;
     private String imageUrl;
+    private boolean isAvailable;
 
     public Vehicle(String model, String year, String city, String price, String detail) {
         this.model = model;
@@ -38,6 +39,7 @@ public class Vehicle implements Parcelable {
         this.city = city;
         this.price = price;
         this.detail = detail;
+        this.isAvailable = true;
     }
 
     public Vehicle(Parcel source) {
@@ -51,6 +53,7 @@ public class Vehicle implements Parcelable {
         startTime = source.readString();
         endTime = source.readString();
         imageUrl = source.readString();
+        isAvailable = source.readInt() == 1;
     }
 
     @Override
@@ -65,6 +68,7 @@ public class Vehicle implements Parcelable {
         dest.writeString(startTime);
         dest.writeString(endTime);
         dest.writeString(imageUrl);
+        dest.writeInt(isAvailable ? 1 : 0);
     }
 
     @Override
@@ -150,5 +154,13 @@ public class Vehicle implements Parcelable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        this.isAvailable = available;
     }
 }

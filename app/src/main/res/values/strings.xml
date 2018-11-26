@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Android_Project</string>
     <string name="menu_search">Search</string>
-    <string name="menu_post">Post</string>
+    <string name="menu_post">Add</string>
     <string name="menu_profile">Profile</string>
 
 
@@ -38,6 +38,7 @@
     <string name="setDate">Set Date</string>
     <string name="setTime">Set Time</string>
     <string name="save">Save</string>
+    <string name="avail">Available</string>
 
 
 </resources>

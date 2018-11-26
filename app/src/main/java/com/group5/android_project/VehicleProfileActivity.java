@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -34,6 +35,7 @@ public class VehicleProfileActivity extends AppCompatActivity
     private EditText txtCity;
     private EditText txtPrice;
     private EditText txtDetail;
+    private Switch switchAvail;
     private Vehicle profileVehicle;
 
     int images[] = {R.drawable.car_default, R.drawable.car_default};
@@ -55,6 +57,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         txtStartTime = findViewById(R.id.selectedStartTime);
         txtEndTime = findViewById(R.id.selectedEndTime);
         btnSave = findViewById(R.id.btnSave);
+        switchAvail = findViewById(R.id.switchAvail);
         Button btnSetStart = findViewById(R.id.btnSetStartDate);
         Button btnSetEnd = findViewById(R.id.btnSetEndDate);
         Button btnStartTime = findViewById(R.id.btnStartTime);
@@ -76,6 +79,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         txtEndDate.setText(profileVehicle.getEndDate());
         txtStartTime.setText(profileVehicle.getStartTime());
         txtEndTime.setText(profileVehicle.getEndTime());
+        switchAvail.setChecked(profileVehicle.isAvailable());
 
         btnSetStart.setOnClickListener(
                 new View.OnClickListener() {
@@ -182,8 +186,9 @@ public class VehicleProfileActivity extends AppCompatActivity
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //if start date is later than end date, show alert
-                        if (!DateValidation()) {
+                        Boolean avail = switchAvail.isChecked();
+                        //if available, and start date is later than end date, show alert
+                        if (avail && (!DateValidation())) {
                             Log.d(TAG, "date validation failed");
                             AlertDialog.Builder alert = new AlertDialog.Builder(VehicleProfileActivity.this);
                             alert.setTitle("Date");
@@ -213,6 +218,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                             String startTime = txtStartTime.getText().toString();
                             String endTime = txtEndTime.getText().toString();
 
+
                             ProfileFragment.vehicleList.get(i).setModel(model);
                             ProfileFragment.vehicleList.get(i).setYear(year);
                             ProfileFragment.vehicleList.get(i).setCity(city);
@@ -222,6 +228,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                             ProfileFragment.vehicleList.get(i).setEndDate(endDate);
                             ProfileFragment.vehicleList.get(i).setStartTime(startTime);
                             ProfileFragment.vehicleList.get(i).setEndTime(endTime);
+                            ProfileFragment.vehicleList.get(i).setAvailable(avail);
 
                             finish();
                         }
