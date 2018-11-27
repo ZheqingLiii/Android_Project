@@ -68,7 +68,7 @@ public class SessionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // SIGN IN USER
-                if (actionButton.getText().toString() == signIn) {
+                if (actionButton.getText().equals(signIn)) {
                     firebaseAuth.signInWithEmailAndPassword(emailAutoCompleteTextView.getText().toString(), passwordEditText.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -77,7 +77,7 @@ public class SessionActivity extends AppCompatActivity {
                             }
                         });
                 // SIGN UP USER
-                } else {
+                } else if (actionButton.getText().equals(signUp)){
                     firebaseAuth.createUserWithEmailAndPassword(emailAutoCompleteTextView.getText().toString(), passwordEditText.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -86,6 +86,8 @@ public class SessionActivity extends AppCompatActivity {
                                 handleAuthResult(task);
                             }
                         });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
