@@ -23,10 +23,8 @@ public class DatePickerFragment extends DialogFragment {
 
         //when the date is not been set yet
         VehicleProfileActivity vehicleProfileActivity = (VehicleProfileActivity) getActivity();
-        if ((VehicleProfileActivity.flag.equals("startDate") &&
-                vehicleProfileActivity.txtStartDate == null) ||
-                (VehicleProfileActivity.flag.equals("endDate") &&
-                        vehicleProfileActivity.txtEndDate == null)) {
+        if ((VehicleProfileActivity.flag.equals("startDate") && (vehicleProfileActivity.txtStartDate == null || vehicleProfileActivity.txtStartDate.equals("")))
+                || (VehicleProfileActivity.flag.equals("endDate") && (vehicleProfileActivity.txtEndDate == null || vehicleProfileActivity.txtEndDate.equals("")))) {
             // Create a new instance of TimePickerDialog and return with current date
             return new DatePickerDialog(getActivity(), listener, year, month, day);
         }

@@ -21,10 +21,8 @@ public class TimePickerFragment extends DialogFragment {
         TimePickerDialog.OnTimeSetListener listener = (TimePickerDialog.OnTimeSetListener) getActivity();
 
         VehicleProfileActivity vehicleProfileActivity = (VehicleProfileActivity) getActivity();
-        if ((VehicleProfileActivity.flag.equals("startTime") &&
-                vehicleProfileActivity.txtStartTime == null) ||
-                (VehicleProfileActivity.flag.equals("endTime") &&
-                        vehicleProfileActivity.txtEndTime == null)) {
+        if ((VehicleProfileActivity.flag.equals("startTime") && (vehicleProfileActivity.txtStartTime == null || vehicleProfileActivity.txtStartTime.equals("")))
+                || (VehicleProfileActivity.flag.equals("endTime") && (vehicleProfileActivity.txtEndTime == null || vehicleProfileActivity.txtEndTime.equals("")))) {
             // Create a new instance of TimePickerDialog and return it
             return new TimePickerDialog(getActivity(), listener, hour, minute,
                     DateFormat.is24HourFormat(getActivity()));

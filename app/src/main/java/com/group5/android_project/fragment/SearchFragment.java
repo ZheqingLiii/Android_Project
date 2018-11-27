@@ -22,8 +22,10 @@ public class SearchFragment extends Fragment {
     ListView carListView;
     Button btnSearchStartDate;
     Button btnSearchEndDate;
-    private TextView sDate;
-    private TextView eDate;
+    public TextView txtsearchStartDate;
+    public TextView txtsearchEndDate;
+    public TextView txtsearchStartDate1;
+    public TextView txtsearchEndDate1;
 
     boolean isDropdownActive = false;
 
@@ -38,8 +40,10 @@ public class SearchFragment extends Fragment {
         searchLayout = view.findViewById(R.id.searchLayout);
         searchDropdown = view.findViewById(R.id.searchDropdownLayout);
         dropdownArrow = view.findViewById(R.id.dropdownArrow);
-        sDate = view.findViewById(R.id.txtStartDate);
-        eDate = view.findViewById(R.id.txtEndDate);
+        txtsearchStartDate = view.findViewById(R.id.txtStartDate);
+        txtsearchEndDate = view.findViewById(R.id.txtEndDate);
+        txtsearchStartDate1 = view.findViewById(R.id.startDateTextView);
+        txtsearchEndDate1 = view.findViewById(R.id.endDateTextView);
         btnSearchStartDate = view.findViewById(R.id.btnStartDate);
         btnSearchEndDate = view.findViewById(R.id.btnEndDate);
         searchLayout.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +66,8 @@ public class SearchFragment extends Fragment {
                 MainActivity.mainflag = "searchStartDate";
                 MainDatePickerFragment dateFragment = new MainDatePickerFragment();
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
-                sDate.setText(mainActivity.mainSearchStartDate);
+                txtsearchStartDate.setText(mainActivity.mainSearchStartDate);
+                txtsearchStartDate1.setText(mainActivity.mainSearchStartDate);
             }
         });
 
@@ -72,7 +77,8 @@ public class SearchFragment extends Fragment {
                 MainActivity.mainflag = "searchEndDate";
                 MainDatePickerFragment dateFragment = new MainDatePickerFragment();
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
-                eDate.setText(mainActivity.mainSearchEndDate);
+                txtsearchEndDate.setText(mainActivity.mainSearchEndDate);
+                txtsearchEndDate1.setText(mainActivity.mainSearchEndDate);
             }
         });
 

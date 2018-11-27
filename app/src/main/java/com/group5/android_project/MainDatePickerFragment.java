@@ -21,14 +21,10 @@ public class MainDatePickerFragment extends DialogFragment {
 
         //when the date is not been set yet
         MainActivity mainActivity = (MainActivity) getActivity();
-        if ((MainActivity.mainflag.equals("searchStartDate") &&
-                mainActivity.mainSearchStartDate == null ||
-                (MainActivity.mainflag.equals("searchEndDate") &&
-                        mainActivity.mainSearchEndDate == null ||
-                        (MainActivity.mainflag.equals("postStartDate") &&
-                                mainActivity.postStartDate == null) ||
-                        (MainActivity.mainflag.equals("postEndDate") &&
-                                mainActivity.postEndDate == null)))) {
+        if ((MainActivity.mainflag.equals("searchStartDate") && (mainActivity.mainSearchStartDate == null || mainActivity.mainSearchStartDate.equals("")))
+                || (MainActivity.mainflag.equals("searchEndDate") && (mainActivity.mainSearchEndDate == null || mainActivity.mainSearchEndDate.equals("")))
+                || (MainActivity.mainflag.equals("postStartDate") && (mainActivity.postStartDate == null || mainActivity.postStartDate.equals("")))
+                || (MainActivity.mainflag.equals("postEndDate") && (mainActivity.postEndDate == null || mainActivity.postEndDate.equals("")))) {
             // Create a new instance of DatePickerDialog and return with current date
             return new DatePickerDialog(getActivity(), listener, year, month, day);
         }

@@ -27,11 +27,9 @@ public class PostFragment extends Fragment {
 
     private static final String TAG = "PostFragment";
     public static String flag = null;
-    public TextView txtStartDate;
-    public TextView txtEndDate;
-    public TextView txtStartTime;
-    public TextView txtEndTime;
-    private Button btnSave;
+    private TextView txtStartDate;
+    private TextView txtEndDate;
+    private Button btnSubmit;
     private EditText txtModel;
     private EditText txtYear;
     private EditText txtCity;
@@ -60,15 +58,11 @@ public class PostFragment extends Fragment {
         txtDetail = v.findViewById(R.id.txtDetail);
         txtStartDate = v.findViewById(R.id.selectedStartDate);
         txtEndDate = v.findViewById(R.id.selectedEndDate);
-        txtStartTime = v.findViewById(R.id.selectedStartTime);
-        txtEndTime = v.findViewById(R.id.selectedEndTime);
-        btnSave = v.findViewById(R.id.btnSave);
+        btnSubmit = v.findViewById(R.id.btnSubmit);
         switchAvail = v.findViewById(R.id.switchAvail);
         switchAvail.setChecked(true);
         Button btnSetStart = v.findViewById(R.id.btnSetStartDate);
         Button btnSetEnd = v.findViewById(R.id.btnSetEndDate);
-        Button btnStartTime = v.findViewById(R.id.btnStartTime);
-        Button btnEndTime = v.findViewById(R.id.btnEndTime);
 
         return v;
     }
