@@ -66,10 +66,10 @@ public class SearchFragment extends Fragment {
                 MainActivity.mainflag = "searchStartDate";
                 MainDatePickerFragment dateFragment = new MainDatePickerFragment();
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
-                txtsearchStartDate.setText(mainActivity.mainSearchStartDate);
-                txtsearchStartDate1.setText(mainActivity.mainSearchStartDate);
             }
         });
+        //txtsearchStartDate.setText(mainActivity.mainSearchStartDate);
+        //txtsearchStartDate1.setText(mainActivity.mainSearchStartDate);
 
         btnSearchEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,16 +77,27 @@ public class SearchFragment extends Fragment {
                 MainActivity.mainflag = "searchEndDate";
                 MainDatePickerFragment dateFragment = new MainDatePickerFragment();
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
-                txtsearchEndDate.setText(mainActivity.mainSearchEndDate);
-                txtsearchEndDate1.setText(mainActivity.mainSearchEndDate);
             }
         });
+        //txtsearchEndDate.setText(mainActivity.mainSearchEndDate);
+        //txtsearchEndDate1.setText(mainActivity.mainSearchEndDate);
 
         carListView = view.findViewById(R.id.carListView);
         // TODO: setup adapter
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+
+    public void setSearchStartDate(String date) {
+        txtsearchStartDate.setText(date);
+        txtsearchStartDate1.setText(date);
+    }
+
+    public void setSearchEndDate(String date) {
+        txtsearchEndDate.setText(date);
+        txtsearchEndDate1.setText(date);
     }
 
 }
