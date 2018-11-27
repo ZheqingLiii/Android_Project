@@ -152,7 +152,8 @@ public class PostFragment extends Fragment {
             postVehicle.setEndDate(endDate);
             postVehicle.setAvailable(avail);
 
-            //TODO: put postVehicle in profile vehicleList
+            //put postVehicle to main activity
+            MainActivity.postVehicle = postVehicle;
 
             Log.d(TAG, "Submit a new vehicle");
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
@@ -171,7 +172,8 @@ public class PostFragment extends Fragment {
                     txtDetail.setText("");
                     switchAvail.setChecked(true);
 
-                    //TODO: clear info in postVehicle
+                    //clear postVehicle
+                    postVehicle = null;
                     dialog.cancel();
                 }
             });

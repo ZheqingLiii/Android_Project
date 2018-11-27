@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     SearchFragment searchFragment;
     MenuItem prevMenuItem;
     private ViewPager viewPager;
+    public static Vehicle postVehicle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     bottomNavigationView.getMenu().getItem(0).setChecked(false);
                 }
                 Log.d("page", "onPageSelected: " + i);
+
+                if (i == 2 && postVehicle != null) {
+                    ProfileFragment.vehicleList.add(postVehicle);
+                    postVehicle = null;
+                }
+
                 bottomNavigationView.getMenu().getItem(i).setChecked(true);
                 prevMenuItem = bottomNavigationView.getMenu().getItem(i);
             }

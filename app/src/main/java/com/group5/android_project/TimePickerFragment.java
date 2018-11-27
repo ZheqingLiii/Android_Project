@@ -2,9 +2,11 @@ package com.group5.android_project;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import java.util.Calendar;
 
@@ -12,6 +14,7 @@ public class TimePickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         // Use the current time as the default values for the picker
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
@@ -40,6 +43,10 @@ public class TimePickerFragment extends DialogFragment {
                     DateFormat.is24HourFormat(getActivity()));
         }
 
+        if (time.equals("")) {
+            return new TimePickerDialog(getActivity(), listener, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
         int nhour = Integer.valueOf(time.substring(0, 2));
         int nminute = Integer.valueOf(time.substring(3, 5));
         return new TimePickerDialog(getActivity(), listener, nhour, nminute,

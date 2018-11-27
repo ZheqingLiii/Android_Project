@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#D8BFD8"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
@@ -172,7 +173,6 @@
                 android:textSize="18sp" />
 
         </LinearLayout>
-
 
 
         <LinearLayout
