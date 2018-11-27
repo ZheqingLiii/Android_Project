@@ -52,7 +52,7 @@ public class SessionActivity extends AppCompatActivity {
         changeActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (actionButton.getText() == signIn) {
+                if (actionButton.getText().toString() == signIn) {
                     changeActionButton.setText(signIn);
                     actionButton.setText(signUp);
                     nameEditText.setVisibility(View.VISIBLE);
@@ -68,7 +68,7 @@ public class SessionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // SIGN IN USER
-                if (actionButton.getText() == signIn) {
+                if (actionButton.getText().toString() == signIn) {
                     firebaseAuth.signInWithEmailAndPassword(emailAutoCompleteTextView.getText().toString(), passwordEditText.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
