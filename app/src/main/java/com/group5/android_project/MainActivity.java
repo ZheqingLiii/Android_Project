@@ -128,8 +128,10 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             searchFragment.setSearchEndDate(resultDate);
         } else if (mainflag.equals("postStartDate")) {
             postStartDate = resultDate;
+            postFragment.setSearchStartDate(resultDate);
         } else if (mainflag.equals("postEndDate")) {
             postEndDate = resultDate;
+            postFragment.setSearchEndDate(resultDate);
         }
 
     }

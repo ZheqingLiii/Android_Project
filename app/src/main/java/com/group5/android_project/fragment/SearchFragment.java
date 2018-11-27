@@ -40,12 +40,15 @@ public class SearchFragment extends Fragment {
         searchLayout = view.findViewById(R.id.searchLayout);
         searchDropdown = view.findViewById(R.id.searchDropdownLayout);
         dropdownArrow = view.findViewById(R.id.dropdownArrow);
+
         txtsearchStartDate = view.findViewById(R.id.txtStartDate);
         txtsearchEndDate = view.findViewById(R.id.txtEndDate);
         txtsearchStartDate1 = view.findViewById(R.id.startDateTextView);
         txtsearchEndDate1 = view.findViewById(R.id.endDateTextView);
+
         btnSearchStartDate = view.findViewById(R.id.btnStartDate);
         btnSearchEndDate = view.findViewById(R.id.btnEndDate);
+
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,8 +71,6 @@ public class SearchFragment extends Fragment {
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
             }
         });
-        //txtsearchStartDate.setText(mainActivity.mainSearchStartDate);
-        //txtsearchStartDate1.setText(mainActivity.mainSearchStartDate);
 
         btnSearchEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,8 +80,6 @@ public class SearchFragment extends Fragment {
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
             }
         });
-        //txtsearchEndDate.setText(mainActivity.mainSearchEndDate);
-        //txtsearchEndDate1.setText(mainActivity.mainSearchEndDate);
 
         carListView = view.findViewById(R.id.carListView);
         // TODO: setup adapter

@@ -121,7 +121,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                 }
         );
 
-        SaveData();
+        UpdateVehicle();
     }
 
     public void showDatePickerDialog(View v) {
@@ -181,7 +181,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         }
     }
 
-    public void SaveData() {
+    public void UpdateVehicle() {
         btnSave.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
