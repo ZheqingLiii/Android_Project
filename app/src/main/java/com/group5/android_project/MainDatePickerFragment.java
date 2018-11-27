@@ -4,11 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 
 import java.util.Calendar;
 
-public class DatePickerFragment extends DialogFragment {
+public class MainDatePickerFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
@@ -20,23 +19,30 @@ public class DatePickerFragment extends DialogFragment {
         // Activity needs to implement this interface
         DatePickerDialog.OnDateSetListener listener = (DatePickerDialog.OnDateSetListener) getActivity();
 
-
         //when the date is not been set yet
-        VehicleProfileActivity vehicleProfileActivity = (VehicleProfileActivity) getActivity();
-        if ((VehicleProfileActivity.flag.equals("startDate") &&
-                vehicleProfileActivity.txtStartDate == null) ||
-                (VehicleProfileActivity.flag.equals("endDate") &&
-                        vehicleProfileActivity.txtEndDate == null)) {
-            // Create a new instance of TimePickerDialog and return with current date
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if ((MainActivity.mainflag.equals("searchStartDate") &&
+                mainActivity.mainSearchStartDate == null ||
+                (MainActivity.mainflag.equals("searchEndDate") &&
+                        mainActivity.mainSearchEndDate == null ||
+                        (MainActivity.mainflag.equals("postStartDate") &&
+                                mainActivity.postStartDate == null) ||
+                        (MainActivity.mainflag.equals("postEndDate") &&
+                                mainActivity.postEndDate == null)))) {
+            // Create a new instance of DatePickerDialog and return with current date
             return new DatePickerDialog(getActivity(), listener, year, month, day);
         }
 
         //input default date
         String date;
-        if (VehicleProfileActivity.flag.equals("startDate")) {
-            date = vehicleProfileActivity.txtStartDate.getText().toString();
-        } else if (VehicleProfileActivity.flag.equals("endDate")) {
-            date = vehicleProfileActivity.txtEndDate.getText().toString();
+        if (MainActivity.mainflag.equals("searchStartDate")) {
+            date = mainActivity.mainSearchStartDate;
+        } else if (MainActivity.mainflag.equals("searchEndDate")) {
+            date = mainActivity.mainSearchEndDate;
+        } else if (MainActivity.mainflag.equals("postStartDate")) {
+            date = mainActivity.postStartDate;
+        } else if (MainActivity.mainflag.equals("postEndDate")) {
+            date = mainActivity.postEndDate;
         } else {
             return new DatePickerDialog(getActivity(), listener, year, month, day);
         }

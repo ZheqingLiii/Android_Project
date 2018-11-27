@@ -22,9 +22,9 @@ public class TimePickerFragment extends DialogFragment {
 
         VehicleProfileActivity vehicleProfileActivity = (VehicleProfileActivity) getActivity();
         if ((VehicleProfileActivity.flag.equals("startTime") &&
-                vehicleProfileActivity.txtStartTime.toString().length() < 2) ||
+                vehicleProfileActivity.txtStartTime == null) ||
                 (VehicleProfileActivity.flag.equals("endTime") &&
-                        vehicleProfileActivity.txtEndTime.toString().length() < 2)) {
+                        vehicleProfileActivity.txtEndTime == null)) {
             // Create a new instance of TimePickerDialog and return it
             return new TimePickerDialog(getActivity(), listener, hour, minute,
                     DateFormat.is24HourFormat(getActivity()));

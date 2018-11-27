@@ -1,6 +1,8 @@
 package com.group5.android_project;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -9,13 +11,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.group5.android_project.fragment.PostFragment;
 import com.group5.android_project.fragment.ProfileFragment;
 import com.group5.android_project.fragment.SearchFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
+    private static final String TAG = "MainActivity";
+    public static String mainflag = null;
+    public String mainSearchStartDate;
+    public String mainSearchEndDate;
+    public String postStartDate;
+    public String postEndDate;
     BottomNavigationView bottomNavigationView;
     PostFragment postFragment;
     ProfileFragment profileFragment;
@@ -90,5 +100,35 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(profileFragment);
 
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        month += 1;
+        Log.d(TAG, "onDataSet " + Integer.toString(month) + " " + Integer.toString(day));
+        String nyear, nmonth, nday;
+        nyear = Integer.toString(year);
+        if (day < 10) {
+            nday = "0" + Integer.toString(day);
+        } else {
+            nday = Integer.toString(day);
+        }
+        if (month < 10) {
+            nmonth = "0" + Integer.toString(month);
+        } else {
+            nmonth = Integer.toString(month);
+        }
+
+        String resultDate = nday + "/" + nmonth + "/" + nyear;
+        if (mainflag.equals("searchStartDate")) {
+            mainSearchStartDate = resultDate;
+        } else if (mainflag.equals("searchEndDate")) {
+            mainSearchEndDate = resultDate;
+        } else if (mainflag.equals("postStartDate")) {
+            postStartDate = resultDate;
+        } else if (mainflag.equals("postEndDate")) {
+            postEndDate = resultDate;
+        }
+
     }
 }
