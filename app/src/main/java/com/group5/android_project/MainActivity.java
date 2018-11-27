@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.group5.android_project.fragment.PostFragment;
 import com.group5.android_project.fragment.ProfileFragment;
 import com.group5.android_project.fragment.SearchFragment;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public String mainSearchEndDate;
     public String postStartDate;
     public String postEndDate;
+    FirebaseUser mainUser;
     BottomNavigationView bottomNavigationView;
     PostFragment postFragment;
     ProfileFragment profileFragment;
@@ -51,10 +54,13 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         viewPager = findViewById(R.id.viewpager);
         bottomNavigationView = findViewById(R.id.navigation);
 
+        mainUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userName = mainUser.getDisplayName();
+        Log.d(TAG, "onCreate: user name: " + userName);
+        //String veUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getUserInfo?username=" + userName;
+        String veUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getUserInfo?username=sgahima";
         DownloadVehicleInfo downloadVehicleInfo = new DownloadVehicleInfo();
-        downloadVehicleInfo.execute("http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getUserInfo?username=sgahima");
-        //downloadVehicleInfo.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml");
-
+        downloadVehicleInfo.execute(veUrl);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -158,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
 
-    private class DownloadVehicleInfo extends AsyncTask<String, Void, String> {
+    private static class DownloadVehicleInfo extends AsyncTask<String, Void, String> {
         private static final String TAG = "DownloadVehicleInfo";
 
         @Override
@@ -185,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 URL url = new URL(urlPath);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 int response = connection.getResponseCode();
-                Log.d(TAG, "downloadXML" + response);
+                Log.d(TAG, "downloadXML response: " + response);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 int charsRead;
                 char[] inputBuffer = new char[500];
