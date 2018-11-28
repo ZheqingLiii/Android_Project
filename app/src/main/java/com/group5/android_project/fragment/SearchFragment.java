@@ -1,5 +1,7 @@
 package com.group5.android_project.fragment;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,10 @@ import com.group5.android_project.MainActivity;
 import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class SearchFragment extends Fragment {
     ConstraintLayout searchLayout;
     RelativeLayout searchDropdown;
@@ -26,6 +32,8 @@ public class SearchFragment extends Fragment {
     public TextView txtsearchEndDate;
     public TextView txtsearchStartDate1;
     public TextView txtsearchEndDate1;
+    TextView locationTextView;
+    double[] latlong = new double[2];
 
     boolean isDropdownActive = false;
 
@@ -41,6 +49,7 @@ public class SearchFragment extends Fragment {
         searchDropdown = view.findViewById(R.id.searchDropdownLayout);
         dropdownArrow = view.findViewById(R.id.dropdownArrow);
 
+        locationTextView = view.findViewById(R.id.locationTextView);
         txtsearchStartDate = view.findViewById(R.id.txtStartDate);
         txtsearchEndDate = view.findViewById(R.id.txtEndDate);
         txtsearchStartDate1 = view.findViewById(R.id.startDateTextView);
@@ -81,10 +90,11 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        search();
+
         carListView = view.findViewById(R.id.carListView);
         // TODO: setup adapter
 
-        // Inflate the layout for this fragment
         return view;
     }
 
@@ -99,4 +109,17 @@ public class SearchFragment extends Fragment {
         txtsearchEndDate1.setText(date);
     }
 
+    public void search() {
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List addressList = geocoder.getFromLocationName(locationTextView.getText().toString(), 1);
+            if (addressList != null && addressList.size() > 0) {
+                Address address = (Address) addressList.get(0);
+                latlong[0] = address.getLatitude();
+                latlong[1] = address.getLongitude();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
