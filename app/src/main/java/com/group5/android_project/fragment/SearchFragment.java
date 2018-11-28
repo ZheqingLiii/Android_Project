@@ -117,6 +117,8 @@ public class SearchFragment extends Fragment {
                 Address address = (Address) addressList.get(0);
                 latlong[0] = address.getLatitude();
                 latlong[1] = address.getLongitude();
+
+//                APIUtils.downloadXML();
             }
         } catch (IOException e) {
             e.printStackTrace();

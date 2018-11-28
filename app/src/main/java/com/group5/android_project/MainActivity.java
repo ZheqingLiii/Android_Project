@@ -1,19 +1,15 @@
 package com.group5.android_project;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.AsyncTask;
-import android.speech.tts.TextToSpeech;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.DatePicker;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +19,6 @@ import com.group5.android_project.fragment.SearchFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -220,8 +215,4 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             return null;
         }
     }
-
-
-
-
 }
