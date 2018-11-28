@@ -17,22 +17,28 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonParser;
 import com.group5.android_project.fragment.PostFragment;
 import com.group5.android_project.fragment.ProfileFragment;
 import com.group5.android_project.fragment.SearchFragment;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "MainActivity";
     public static String mainflag = null;
+    public static ArrayList<Vehicle> mainVehicleList;
     public String mainSearchStartDate;
     public String mainSearchEndDate;
     public String postStartDate;
@@ -51,16 +57,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainVehicleList = new ArrayList<Vehicle>();
+
         viewPager = findViewById(R.id.viewpager);
         bottomNavigationView = findViewById(R.id.navigation);
 
         mainUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userName = mainUser.getDisplayName();
-        Log.d(TAG, "onCreate: user name: " + userName);
-        //String veUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getUserInfo?username=" + userName;
-        String veUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getUserInfo?username=sgahima";
-        DownloadVehicleInfo downloadVehicleInfo = new DownloadVehicleInfo();
-        downloadVehicleInfo.execute(veUrl);
+        //String userID = mainUser.getUid();
+        String userID = "schen"; // for testing
+        Log.d(TAG, "onCreate: user name: " + userID);
+        String veUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByKey?OwnerID=" + userID;
+        DownloadVehicleInfo downloadVeInfo = new DownloadVehicleInfo();
+        downloadVeInfo.execute(veUrl);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -171,18 +179,60 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG, "onPostExecute parameter is " + s);
+
         }
 
         @Override
         protected String doInBackground(String... strings) {
-            Log.d(TAG, "do in background");
-            String vehicleInfo = downloadXML(strings[0]);
-            if (vehicleInfo == null) {
+            Log.d(TAG, "do in background starts with " + strings[0]);
+            String vehicleID = downloadXML(strings[0]);
+            if (vehicleID == null) {
                 Log.e(TAG, "doInBackground, error downloading");
             }
 
+            ArrayList<Integer> CarIdList = new ArrayList<>();
+            // get Car ID
+            try {
+                JSONArray jsonArray = new JSONArray(vehicleID);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject e = jsonArray.getJSONObject(i);
+                    CarIdList.add(e.getInt("CarID"));
+                    Log.d(TAG, "doInBackground: Car ID " + e.getInt("CarID"));
+                }
 
-            return vehicleInfo;
+            } catch (Exception e) {
+                Log.d(TAG, "doInBackground: parse CarID, JSON array creation failed");
+            }
+
+            final String carUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarInfo?CarID=";
+            for (Integer id : CarIdList) {
+                String url = carUrl + Integer.toString(id);
+                String vehicleInfo = downloadXML(url);
+                Log.d(TAG, "doInBackground: vehicleInfo " + vehicleInfo);
+
+                // parse vehicle info
+                try {
+                    JSONObject obj = new JSONObject(vehicleInfo);
+                    String model = obj.getString("Model");
+                    String year = obj.getString("Year");
+                    String startDate = obj.getString("CurrentStartDate");
+                    String endDate = obj.getString("CurrentEndDate");
+                    String city = obj.getString("HomeCity");
+                    String price = String.valueOf(obj.getDouble("PricePerDay"));
+                    String detail = obj.getString("Detail");
+
+                    Vehicle curVe = new Vehicle(model, year, city, price, detail);
+                    curVe.setStartDate(startDate);
+                    curVe.setEndDate(endDate);
+
+                    mainVehicleList.add(curVe);
+
+                } catch (Exception e) {
+                    Log.d(TAG, "doInBackground: vehicle info parsing failed");
+                }
+            }
+
+            return vehicleID;
         }
 
         private String downloadXML(String urlPath) {
@@ -192,7 +242,9 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 int response = connection.getResponseCode();
                 Log.d(TAG, "downloadXML response: " + response);
+
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
                 int charsRead;
                 char[] inputBuffer = new char[500];
                 while (true) {
@@ -204,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                         xmlResult.append(String.copyValueOf(inputBuffer, 0, charsRead));
                     }
                 }
+
                 reader.close();
 
                 return xmlResult.toString();
