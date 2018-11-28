@@ -3,7 +3,6 @@ package com.group5.android_project;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     public String mainSearchEndDate;
     public String postStartDate;
     public String postEndDate;
-    FirebaseUser mainUser;
+    public static FirebaseUser mainUser;
     BottomNavigationView bottomNavigationView;
     PostFragment postFragment;
     ProfileFragment profileFragment;
@@ -63,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         bottomNavigationView = findViewById(R.id.navigation);
 
         mainUser = FirebaseAuth.getInstance().getCurrentUser();
-        //String userID = mainUser.getUid();
-        String userID = "schen"; // for testing
+        String userID = mainUser.getUid();
+        //String userID = "schen"; // for testing
         Log.d(TAG, "onCreate: user name: " + userID);
         String veUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByKey?OwnerID=" + userID;
         DownloadVehicleInfo downloadVeInfo = new DownloadVehicleInfo();
@@ -179,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG, "onPostExecute parameter is " + s);
-
         }
 
         @Override
@@ -212,18 +210,27 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
                 // parse vehicle info
                 try {
-                    JSONObject obj = new JSONObject(vehicleInfo);
+                    JSONArray jsonArray = new JSONArray(vehicleInfo);
+                    JSONObject obj = jsonArray.getJSONObject(0);
                     String model = obj.getString("Model");
                     String year = obj.getString("Year");
                     String startDate = obj.getString("CurrentStartDate");
+                    if (startDate.equals("null")) {
+                        startDate = "";
+                    }
                     String endDate = obj.getString("CurrentEndDate");
+                    if (endDate.equals("null")) {
+                        endDate = "";
+                    }
                     String city = obj.getString("HomeCity");
                     String price = String.valueOf(obj.getDouble("PricePerDay"));
                     String detail = obj.getString("Detail");
+                    Integer veID = obj.getInt("CarID");
 
                     Vehicle curVe = new Vehicle(model, year, city, price, detail);
                     curVe.setStartDate(startDate);
                     curVe.setEndDate(endDate);
+                    curVe.setVeID(veID);
 
                     mainVehicleList.add(curVe);
 

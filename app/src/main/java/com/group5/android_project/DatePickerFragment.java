@@ -39,6 +39,10 @@ public class DatePickerFragment extends DialogFragment {
             return new DatePickerDialog(getActivity(), listener, year, month, day);
         }
 
+        if (date.length() < 9) {
+            return new DatePickerDialog(getActivity(), listener, year, month, day);
+        }
+
         int nday = Integer.valueOf(date.substring(0, 2));
         int nmonth = Integer.valueOf(date.substring(3, 5)) - 1;
         int nyear = Integer.valueOf(date.substring(6, 10));
