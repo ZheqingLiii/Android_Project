@@ -122,16 +122,21 @@ public class PostFragment extends Fragment {
         String price = txtPrice.getText().toString();
         String detail = txtDetail.getText().toString();
         String startDate = txtStartDate.getText().toString();
+        if (startDate.length() < 1) {
+            startDate = "";
+        }
         String endDate = txtEndDate.getText().toString();
+        if (endDate.length() < 1) {
+            endDate = "";
+        }
         Boolean avail = switchAvail.isChecked();
 
 
-        if (model.equals("") || year.equals("") || city.equals("") || price.equals("") || detail.equals("")
-                || startDate.equals("") || endDate.equals("")) {
+        if (model.equals("") || year.equals("") || city.equals("") || price.equals("") || detail.equals("")) {
             Log.d(TAG, "information incomplete");
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setTitle("Information incomplete");
-            alert.setMessage("Please fill in all the information.");
+            alert.setMessage("Please fill in all the text.");
             alert.setCancelable(false);
             alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -181,7 +186,6 @@ public class PostFragment extends Fragment {
             Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
             PutVehicleInfo putVehicleInfo = new PutVehicleInfo();
             putVehicleInfo.execute(urlPath);
-            //TODO: update startdate and end date
 
 
             Log.d(TAG, "Submit a new vehicle");
@@ -212,6 +216,9 @@ public class PostFragment extends Fragment {
     }
 
     private boolean DateValidation(String startDate, String endDate) {
+        if (startDate.length() < 1 || endDate.length() < 1) {
+            return true;
+        }
         int startyear = Integer.valueOf(startDate.substring(6, 10));
         int endyear = Integer.valueOf(endDate.substring(6, 10));
         if (startyear > endyear) {
