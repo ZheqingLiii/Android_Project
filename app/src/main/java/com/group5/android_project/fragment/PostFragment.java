@@ -164,6 +164,8 @@ public class PostFragment extends Fragment {
             postVehicle.setEndDate(endDate);
             postVehicle.setAvailable(avail);
 
+            //put postVehicle to main activity
+            MainActivity.postVehicle = postVehicle;
 
             // api
             String urlPath = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/putCarInfo?"
@@ -179,9 +181,7 @@ public class PostFragment extends Fragment {
             Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
             PutVehicleInfo putVehicleInfo = new PutVehicleInfo();
             putVehicleInfo.execute(urlPath);
-
-            //put postVehicle to main activity
-            MainActivity.postVehicle = postVehicle;
+            //TODO: update startdate and end date
 
 
             Log.d(TAG, "Submit a new vehicle");
@@ -241,9 +241,9 @@ public class PostFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG, "onPostExecute parameter is " + s);
-            // TODO: add CarID
-            //MainActivity.postVehicle.getVeID();
-
+            // TODO: add CarID from response s
+            Integer carId = 0;
+            MainActivity.postVehicle.setVeID(carId);
         }
 
         @Override
