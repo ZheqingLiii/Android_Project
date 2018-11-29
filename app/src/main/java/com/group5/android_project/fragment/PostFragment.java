@@ -256,16 +256,11 @@ public class PostFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             Log.d(TAG, "do in background starts with " + strings[0]);
-            String putVeInfo = PutVehicleInfo(strings[0]);
-            if (putVeInfo == null) {
-                Log.e(TAG, "doInBackground, error downloading");
-            }
-
-            return putVeInfo;
+            return PutVehicleInformation(strings[0]);
         }
 
 
-        private String PutVehicleInfo(String urlPath) {
+        private String PutVehicleInformation(String urlPath) {
             StringBuilder xmlResult = new StringBuilder();
 
             try {
