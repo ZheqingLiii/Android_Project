@@ -81,6 +81,7 @@ public class ProfileFragment extends Fragment {
 
         firstName.setText(user.getDisplayName());
         //firstName.setText("Username");
+        //firstName.setText("Username");
         try {
             //TODO
             Picasso.with(v.getContext()).load(user.getPhotoUrl()).into(userImage);

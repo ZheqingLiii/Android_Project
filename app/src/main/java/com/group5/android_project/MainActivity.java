@@ -2,6 +2,7 @@ package com.group5.android_project;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -51,10 +52,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private ViewPager viewPager;
     public static Vehicle postVehicle;
 
+    public static Context contextOfApplication;
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        contextOfApplication = getApplicationContext();
 
         mainVehicleList = new ArrayList<Vehicle>();
 
@@ -279,6 +288,12 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
             return null;
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

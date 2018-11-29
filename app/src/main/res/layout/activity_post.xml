@@ -14,13 +14,20 @@
         android:orientation="vertical">
 
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/veImage_viewPager"
+        <WebView
+            android:id="@+id/webViewCar"
             android:layout_width="270dp"
             android:layout_height="250dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
             android:src="@drawable/car_default" />
+
+        <Button
+            android:id="@+id/button_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60dp"
+            android:text="UPLOAD" />
 
 
         <LinearLayout
@@ -119,6 +126,35 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Location "
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/txtLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your car location"
+                android:lines="1"
+                android:maxLines="3" />
+
+
+        </LinearLayout>
+
+
+        <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Start Date - End Date"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
@@ -173,6 +209,8 @@
                 android:textSize="18sp" />
 
         </LinearLayout>
+
+        -->
 
 
         <LinearLayout

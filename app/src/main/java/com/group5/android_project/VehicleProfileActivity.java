@@ -221,10 +221,49 @@ public class VehicleProfileActivity extends AppCompatActivity
                             String city = txtCity.getText().toString();
                             String price = txtPrice.getText().toString();
                             String detail = txtDetail.getText().toString();
+
                             String startDate = txtStartDate.getText().toString();
                             String endDate = txtEndDate.getText().toString();
                             String startTime = txtStartTime.getText().toString();
                             String endTime = txtEndTime.getText().toString();
+
+
+                            /*
+                            // call api to update
+                            UpdateVehicleInfo updateVehicleInfo = new UpdateVehicleInfo();
+                            String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/updateCarInfo?CarID="
+                                    + ProfileFragment.vehicleList.get(i).getVeID();
+                            if (!model.equals(ProfileFragment.vehicleList.get(i).getModel())) {
+                                String modelUrl = url + "&Model=" + model;
+                                Log.d(TAG, "onClick: url " + modelUrl);
+                                updateVehicleInfo.execute(modelUrl);
+                            }
+                            if (!year.equals(ProfileFragment.vehicleList.get(i).getYear())) {
+                                String yearUrl = url + "&Year=" + year;
+                                Log.d(TAG, "onClick: url " + yearUrl);
+                                updateVehicleInfo.execute(yearUrl);
+                            }
+                            if (!city.equals(ProfileFragment.vehicleList.get(i).getCity())) {
+                                String cityUrl = url + "&HomeCity=" + city;
+                                Log.d(TAG, "onClick: url " + cityUrl);
+                                updateVehicleInfo.execute(cityUrl);
+                            }
+                            if (!price.equals(ProfileFragment.vehicleList.get(i).getPrice())) {
+                                String priceUrl = url + "&PricePerDay=" + price;
+                                Log.d(TAG, "onClick: url " + priceUrl);
+                                updateVehicleInfo.execute(priceUrl);
+                            }
+                            if (!detail.equals(ProfileFragment.vehicleList.get(i).getDetail())) {
+                                String detailUrl = url + "&Detail=" + detail;
+                                Log.d(TAG, "onClick: url " + detailUrl);
+                                updateVehicleInfo.execute(detailUrl);
+                            }
+                            if (avail != ProfileFragment.vehicleList.get(i).isAvailable()) {
+                                String availUrl = url + "&isAvailable=" + avail;
+                                Log.d(TAG, "onClick: url " + availUrl);
+                                updateVehicleInfo.execute(availUrl);
+                            }
+                            */
 
 
                             ProfileFragment.vehicleList.get(i).setModel(model);
@@ -237,6 +276,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                             ProfileFragment.vehicleList.get(i).setStartTime(startTime);
                             ProfileFragment.vehicleList.get(i).setEndTime(endTime);
                             ProfileFragment.vehicleList.get(i).setAvailable(avail);
+
 
                             finish();
                         }
@@ -287,12 +327,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... strings) {
             Log.d(TAG, "do in background starts with " + strings[0]);
-            String updateVeInfo = UpdateVeInfo(strings[0]);
-            if (updateVeInfo == null) {
-                Log.e(TAG, "doInBackground, error downloading");
-            }
-
-            return updateVeInfo;
+            return UpdateVeInfo(strings[0]);
         }
 
 
