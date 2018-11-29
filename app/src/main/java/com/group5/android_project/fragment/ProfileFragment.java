@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.group5.android_project.MainActivity;
 import com.group5.android_project.R;
 import com.group5.android_project.SessionActivity;
 import com.group5.android_project.SplashActivity;
@@ -65,26 +66,8 @@ public class ProfileFragment extends Fragment {
     }
 
     public void populateVehicleInfo() {
+        vehicleList = MainActivity.mainVehicleList;
 
-        //sample
-        vehicleList = new ArrayList<Vehicle>();
-        Vehicle car1 = new Vehicle("Toyota Camry", "2018", "San Jose", "122",
-                "22 MPG, Regular Gas, 2 doors, 4 seats, Automatic transmission, Audio input, Convertible, USB input, Heated seats");
-        car1.setStartDate("01/01/2018");
-        car1.setEndDate("05/01/2018");
-        car1.setStartTime("13:30");
-        car1.setEndTime("22:30");
-        car1.setImageUrl("https://crdms.images.consumerreports.org/c_lfill,w_480/prod/cars/cr/model-years/8073-2018-toyota-camry");
-        vehicleList.add(car1);
-
-        Vehicle car2 = new Vehicle("Toyota Camry", "2014", "Santa Clara", "234",
-                "22 MPG, Regular Gas, 2 doors, 4 seats, Automatic transmission, Audio input, Convertible, USB input, Heated seats");
-        car2.setStartDate("02/02/2018");
-        car2.setEndDate("02/02/2019");
-        car2.setStartTime("09:00");
-        car2.setEndTime("23:30");
-        car2.setImageUrl("https://crdms.images.consumerreports.org/c_lfill,w_480/prod/cars/cr/model-years/8073-2018-toyota-camry");
-        vehicleList.add(car2);
     }
 
 
