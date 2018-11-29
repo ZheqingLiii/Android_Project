@@ -1,57 +1,36 @@
 package com.group5.android_project.fragment;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
+
 
 import com.group5.android_project.BuildConfig;
-import com.group5.android_project.DatePickerFragment;
 import com.group5.android_project.MainActivity;
-import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
-import com.group5.android_project.TimePickerFragment;
 import com.group5.android_project.Vehicle;
-import com.group5.android_project.VehicleProfileActivity;
+
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -65,8 +44,6 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-import static android.support.v4.provider.FontsContractCompat.FontRequestCallback.RESULT_OK;
 
 
 public class PostFragment extends Fragment {
@@ -82,9 +59,8 @@ public class PostFragment extends Fragment {
     private EditText txtPrice;
     private EditText txtDetail;
     private Switch switchAvail;
+    private EditText txtLocation;
     public Vehicle postVehicle;
-    Uri file;
-    private Button btnUpload;
 
 
     public PostFragment() {
@@ -93,21 +69,6 @@ public class PostFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    private static File getOutputMediaFile() {
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "CameraDemo");
-
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator +
-                "IMG_" + timeStamp + ".jpg");
     }
 
     @Override
@@ -122,19 +83,13 @@ public class PostFragment extends Fragment {
         txtDetail = v.findViewById(R.id.txtDetail);
         txtStartDate = v.findViewById(R.id.selectedStartDate);
         txtEndDate = v.findViewById(R.id.selectedEndDate);
+        txtLocation = v.findViewById(R.id.txtLocation);
         btnSubmit = v.findViewById(R.id.btnSubmit);
         switchAvail = v.findViewById(R.id.switchAvail);
         switchAvail.setChecked(true);
+        //webView = v.findViewById(R.id.webViewCar);
 
 
-        btnUpload = v.findViewById(R.id.button_image);
-
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePicture(v);
-            }
-        });
 
 
 
@@ -173,91 +128,6 @@ public class PostFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
-            new Post().execute(1, 1, 1);
-            Log.d("Pic Log: ", "Here 2: " + file.getPath());
-        }
-    }
-
-    public void uploadFile(File fileName) {
-
-
-        FTPClient ftpClient = new FTPClient();
-
-        try {
-            ftpClient.connect("18.219.38.137");
-            ftpClient.login("team5", "coen268");
-            ftpClient.changeWorkingDirectory("/files");
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            BufferedInputStream buffIn = null;
-
-            Context applicationContext = MainActivity.getContextOfApplication();
-            buffIn = new BufferedInputStream(new FileInputStream(applicationContext.getContentResolver().openFileDescriptor(file, "r").getFileDescriptor()));
-            ftpClient.enterLocalPassiveMode();
-            ftpClient.storeFile("CarID3.jpg", buffIn);
-            buffIn.close();
-            ftpClient.logout();
-            ftpClient.disconnect();
-            Log.d("FTP code: ", "Success");
-
-        } catch (Exception e) {
-            Log.d("FTP code: ", "Error1");
-            e.printStackTrace();
-            try {
-                Log.d("FTP code: ", "Error2");
-                ftpClient.disconnect();
-            } catch (Exception e2) {
-                Log.d("FTP code: ", "Error3");
-                e2.printStackTrace();
-            }
-        }
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 0) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("Pic Log: ", "xHere 1");
-                btnUpload.setEnabled(true);
-                Log.d("Pic Log: ", "xHere 2");
-            }
-        }
-    }
-
-    public void takePicture(View view) {
-        Log.d("Pic Log: ", "Here 0");
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //file = Uri.fromFile(getOutputMediaFile());
-        Log.d("Pic Log: ", "Here 1");
-        file = FileProvider.getUriForFile(MainActivity.getContextOfApplication(), BuildConfig.APPLICATION_ID, getOutputMediaFile());
-        Log.d("Pic Log: ", "uploaded started");
-        Log.d("Pic Log: ", "uploaded started: " + file.getPath());
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
-        Log.d("Pic Log: ", "intent set");
-        this.startActivityForResult(intent, 100);
-
-    }
-
-    private class Post extends AsyncTask<Integer, Integer, Integer> {
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Integer doInBackground(Integer... arg) {
-            Log.d("Pic Log: ", "Starting in Post Class");
-            uploadFile(new File(file.getPath()));
-            return 0;
-        }
-
-        protected void onPostExecute(String result) {
-        }
-    }
 
 
 
@@ -276,6 +146,7 @@ public class PostFragment extends Fragment {
         String city = txtCity.getText().toString();
         String price = txtPrice.getText().toString();
         String detail = txtDetail.getText().toString();
+        /*
         String startDate = txtStartDate.getText().toString();
         if (startDate.length() < 1) {
             startDate = "";
@@ -284,6 +155,7 @@ public class PostFragment extends Fragment {
         if (endDate.length() < 1) {
             endDate = "";
         }
+        */
         Boolean avail = switchAvail.isChecked();
 
 
@@ -302,6 +174,7 @@ public class PostFragment extends Fragment {
             AlertDialog alertDialog = alert.create();
             alertDialog.show();
         }
+        /*
         //if available, and start date is later than end date, show alert
         else if (avail && (!DateValidation(startDate, endDate))) {
             Log.d(TAG, "date validation failed");
@@ -318,10 +191,11 @@ public class PostFragment extends Fragment {
             AlertDialog alertDialog = alert.create();
             alertDialog.show();
 
-        } else {
+        } */
+        else {
             postVehicle = new Vehicle(model, year, city, price, detail);
-            postVehicle.setStartDate(startDate);
-            postVehicle.setEndDate(endDate);
+            //postVehicle.setStartDate(startDate);
+            //postVehicle.setEndDate(endDate);
             postVehicle.setAvailable(avail);
 
             //put postVehicle to main activity
@@ -351,13 +225,14 @@ public class PostFragment extends Fragment {
             alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    txtStartDate.setText("");
-                    txtEndDate.setText("");
+                    //txtStartDate.setText("");
+                    //txtEndDate.setText("");
                     txtModel.setText("");
                     txtYear.setText("");
                     txtCity.setText("");
                     txtPrice.setText("");
                     txtDetail.setText("");
+                    txtLocation.setText("");
                     switchAvail.setChecked(true);
 
                     //clear postVehicle
@@ -403,9 +278,14 @@ public class PostFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG, "onPostExecute parameter is " + s);
-            // TODO: add CarID from response s
-            Integer carId = 0;
-            MainActivity.postVehicle.setVeID(carId);
+            //add CarID from response
+            if (s.length() == 0) {
+                Log.d(TAG, "onPostExecute: No car ID returned");
+            } else {
+                Integer carId = Integer.valueOf(s);
+                MainActivity.postVehicle.setVeID(carId);
+            }
+
         }
 
         @Override

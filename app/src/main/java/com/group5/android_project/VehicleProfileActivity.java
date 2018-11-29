@@ -3,14 +3,22 @@ package com.group5.android_project;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,12 +28,20 @@ import android.widget.TimePicker;
 
 import com.group5.android_project.fragment.ProfileFragment;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class VehicleProfileActivity extends AppCompatActivity
@@ -38,6 +54,7 @@ public class VehicleProfileActivity extends AppCompatActivity
     public TextView txtStartTime;
     public TextView txtEndTime;
     private Button btnSave;
+    Uri file;
     private EditText txtModel;
     private EditText txtYear;
     private EditText txtCity;
@@ -45,10 +62,28 @@ public class VehicleProfileActivity extends AppCompatActivity
     private EditText txtDetail;
     private Switch switchAvail;
     private Vehicle profileVehicle;
+    private Button btnUpload;
+    private String carID;
+    private WebView webView;
 
     int images[] = {R.drawable.car_default, R.drawable.car_default};
-    ImageSliderPagerAdapter imageSlider;
-    private ViewPager viewPager;
+    //ImageSliderPagerAdapter imageSlider;
+    //private ViewPager viewPager;
+
+    private static File getOutputMediaFile() {
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "CameraDemo");
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_" + timeStamp + ".jpg");
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,10 +105,11 @@ public class VehicleProfileActivity extends AppCompatActivity
         Button btnSetEnd = findViewById(R.id.btnSetEndDate);
         Button btnStartTime = findViewById(R.id.btnStartTime);
         Button btnEndTime = findViewById(R.id.btnEndTime);
-        viewPager = findViewById(R.id.veImage_viewPager);
+        //viewPager = findViewById(R.id.veImage_viewPager);
+        webView = findViewById(R.id.webView);
 
-        imageSlider = new ImageSliderPagerAdapter(this, images);
-        viewPager.setAdapter(imageSlider);
+        //imageSlider = new ImageSliderPagerAdapter(this, images);
+        //viewPager.setAdapter(imageSlider);
 
         //get values from intent
         profileVehicle = getIntent().getParcelableExtra("vehicle");
@@ -88,6 +124,18 @@ public class VehicleProfileActivity extends AppCompatActivity
         txtStartTime.setText(profileVehicle.getStartTime());
         txtEndTime.setText(profileVehicle.getEndTime());
         switchAvail.setChecked(profileVehicle.isAvailable());
+        if (profileVehicle.getImageUrl() != null && profileVehicle.getImageUrl().length() > 2) {
+            webView.loadUrl(profileVehicle.getImageUrl());
+        }
+
+        carID = profileVehicle.getVeID().toString();
+        btnUpload = findViewById(R.id.button_image);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture(v);
+            }
+        });
 
         btnSetStart.setOnClickListener(
                 new View.OnClickListener() {
@@ -131,6 +179,154 @@ public class VehicleProfileActivity extends AppCompatActivity
 
         UpdateVehicle();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+
+                new Post().execute(1, 1, 1);
+                Log.i("Pic Log: ", "Here 2: " + file.getPath());
+            }
+        }
+    }
+
+    public void uploadFile(File fileName) {
+        FTPClient ftpClient = new FTPClient();
+
+        try {
+            ftpClient.connect("18.219.38.137");
+            ftpClient.login("team5", "coen268");
+            ftpClient.changeWorkingDirectory("/files");
+            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            BufferedInputStream buffIn = null;
+
+            buffIn = new BufferedInputStream(new FileInputStream(this.getContentResolver().openFileDescriptor(file, "r").getFileDescriptor()));
+            ftpClient.enterLocalPassiveMode();
+            String imageName = "CarID" + carID + ".jpg";
+            Log.d(TAG, "uploadFile: imageName: " + imageName);
+            ftpClient.storeFile(imageName, buffIn);
+            buffIn.close();
+            ftpClient.logout();
+            ftpClient.disconnect();
+            Log.d("FTP code: ", "Success");
+            String imageUrl = "http://18.219.38.137/home/team5/ftp/files/" + imageName;
+            profileVehicle.setImageUrl(imageUrl);
+
+        } catch (Exception e) {
+            Log.d("FTP code: ", "Error1");
+            e.printStackTrace();
+            try {
+                Log.d("FTP code: ", "Error2");
+                ftpClient.disconnect();
+            } catch (Exception e2) {
+                Log.d("FTP code: ", "Error3");
+                e2.printStackTrace();
+            }
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("Pic Log: ", "xHere 1");
+                btnUpload.setEnabled(true);
+                Log.d("Pic Log: ", "xHere 2");
+            }
+        }
+    }
+
+
+    public void takePicture(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        file = FileProvider.getUriForFile(VehicleProfileActivity.this, BuildConfig.APPLICATION_ID, getOutputMediaFile());
+        Log.d("Pic Log: ", "uploaded started: " + file.getPath());
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+        Log.d("Pic Log: ", "intent set");
+        this.startActivityForResult(intent, 100);
+
+    }
+
+    public void UpdateVehicle() {
+        btnSave.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Boolean avail = switchAvail.isChecked();
+                        //if available, and start date is later than end date, show alert
+                        if (avail && (!DateValidation())) {
+                            Log.d(TAG, "date validation failed");
+                            AlertDialog.Builder alert = new AlertDialog.Builder(VehicleProfileActivity.this);
+                            alert.setTitle("Date");
+                            alert.setMessage("Your end date should be later than your start date");
+                            alert.setCancelable(false);
+                            alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            AlertDialog alertDialog = alert.create();
+                            alertDialog.show();
+                        } else {
+                            //save and go back to profile
+                            int i = getIntent().getIntExtra("vehicleIndex", 0);
+                            Log.d(TAG, txtModel.getText().toString());
+                            Log.d(TAG, "TEST " + ProfileFragment.vehicleList.get(i).getVeID().toString());
+
+                            String model = txtModel.getText().toString();
+                            String year = txtYear.getText().toString();
+                            String city = txtCity.getText().toString();
+                            String price = txtPrice.getText().toString();
+                            String detail = txtDetail.getText().toString();
+                            String startDate = txtStartDate.getText().toString();
+                            String endDate = txtEndDate.getText().toString();
+                            String startTime = txtStartTime.getText().toString();
+                            String endTime = txtEndTime.getText().toString();
+                            String available = String.valueOf(avail);
+
+
+
+                            // call api to update
+                            UpdateVehicleInfo updateVehicleInfo = new UpdateVehicleInfo();
+                            String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/updateCarInfoBulk?CarID="
+                                    + ProfileFragment.vehicleList.get(i).getVeID()
+                                    + "&Model=" + model
+                                    + "&Year=" + year
+                                    + "&HomeCity=" + city
+                                    + "&PricePerDay=" + price
+                                    + "&Detail=" + detail
+                                    + "&isAvailable=" + available;
+                            Log.d(TAG, "onClick: url " + url);
+                            updateVehicleInfo.execute(url);
+
+
+
+
+                            ProfileFragment.vehicleList.get(i).setModel(model);
+                            ProfileFragment.vehicleList.get(i).setYear(year);
+                            ProfileFragment.vehicleList.get(i).setCity(city);
+                            ProfileFragment.vehicleList.get(i).setPrice(price);
+                            ProfileFragment.vehicleList.get(i).setDetail(detail);
+                            ProfileFragment.vehicleList.get(i).setStartDate(startDate);
+                            ProfileFragment.vehicleList.get(i).setEndDate(endDate);
+                            ProfileFragment.vehicleList.get(i).setStartTime(startTime);
+                            ProfileFragment.vehicleList.get(i).setEndTime(endTime);
+                            ProfileFragment.vehicleList.get(i).setAvailable(avail);
+
+
+                            finish();
+                        }
+                    }
+                }
+        );
+    }
+
 
     public void showDatePickerDialog(View v) {
         DatePickerFragment dateFragment = new DatePickerFragment();
@@ -189,100 +385,18 @@ public class VehicleProfileActivity extends AppCompatActivity
         }
     }
 
-    public void UpdateVehicle() {
-        btnSave.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Boolean avail = switchAvail.isChecked();
-                        //if available, and start date is later than end date, show alert
-                        if (avail && (!DateValidation())) {
-                            Log.d(TAG, "date validation failed");
-                            AlertDialog.Builder alert = new AlertDialog.Builder(VehicleProfileActivity.this);
-                            alert.setTitle("Date");
-                            alert.setMessage("Your end date should be later than your start date");
-                            alert.setCancelable(false);
-                            alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            AlertDialog alertDialog = alert.create();
-                            alertDialog.show();
-                        } else {
-                            //save and go back to profile
-                            int i = getIntent().getIntExtra("vehicleIndex", 0);
-                            Log.d(TAG, txtModel.getText().toString());
-                            Log.d(TAG, "TEST " + ProfileFragment.vehicleList.get(i).getVeID().toString());
+    private class Post extends AsyncTask<Integer, Integer, Integer> {
+        protected void onPreExecute() {
+        }
 
-                            String model = txtModel.getText().toString();
-                            String year = txtYear.getText().toString();
-                            String city = txtCity.getText().toString();
-                            String price = txtPrice.getText().toString();
-                            String detail = txtDetail.getText().toString();
+        @Override
+        protected Integer doInBackground(Integer... arg) {
+            uploadFile(new File(file.getPath()));
+            return 0;
+        }
 
-                            String startDate = txtStartDate.getText().toString();
-                            String endDate = txtEndDate.getText().toString();
-                            String startTime = txtStartTime.getText().toString();
-                            String endTime = txtEndTime.getText().toString();
-
-
-                            /*
-                            // call api to update
-                            UpdateVehicleInfo updateVehicleInfo = new UpdateVehicleInfo();
-                            String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/updateCarInfo?CarID="
-                                    + ProfileFragment.vehicleList.get(i).getVeID();
-                            if (!model.equals(ProfileFragment.vehicleList.get(i).getModel())) {
-                                String modelUrl = url + "&Model=" + model;
-                                Log.d(TAG, "onClick: url " + modelUrl);
-                                updateVehicleInfo.execute(modelUrl);
-                            }
-                            if (!year.equals(ProfileFragment.vehicleList.get(i).getYear())) {
-                                String yearUrl = url + "&Year=" + year;
-                                Log.d(TAG, "onClick: url " + yearUrl);
-                                updateVehicleInfo.execute(yearUrl);
-                            }
-                            if (!city.equals(ProfileFragment.vehicleList.get(i).getCity())) {
-                                String cityUrl = url + "&HomeCity=" + city;
-                                Log.d(TAG, "onClick: url " + cityUrl);
-                                updateVehicleInfo.execute(cityUrl);
-                            }
-                            if (!price.equals(ProfileFragment.vehicleList.get(i).getPrice())) {
-                                String priceUrl = url + "&PricePerDay=" + price;
-                                Log.d(TAG, "onClick: url " + priceUrl);
-                                updateVehicleInfo.execute(priceUrl);
-                            }
-                            if (!detail.equals(ProfileFragment.vehicleList.get(i).getDetail())) {
-                                String detailUrl = url + "&Detail=" + detail;
-                                Log.d(TAG, "onClick: url " + detailUrl);
-                                updateVehicleInfo.execute(detailUrl);
-                            }
-                            if (avail != ProfileFragment.vehicleList.get(i).isAvailable()) {
-                                String availUrl = url + "&isAvailable=" + avail;
-                                Log.d(TAG, "onClick: url " + availUrl);
-                                updateVehicleInfo.execute(availUrl);
-                            }
-                            */
-
-
-                            ProfileFragment.vehicleList.get(i).setModel(model);
-                            ProfileFragment.vehicleList.get(i).setYear(year);
-                            ProfileFragment.vehicleList.get(i).setCity(city);
-                            ProfileFragment.vehicleList.get(i).setPrice(price);
-                            ProfileFragment.vehicleList.get(i).setDetail(detail);
-                            ProfileFragment.vehicleList.get(i).setStartDate(startDate);
-                            ProfileFragment.vehicleList.get(i).setEndDate(endDate);
-                            ProfileFragment.vehicleList.get(i).setStartTime(startTime);
-                            ProfileFragment.vehicleList.get(i).setEndTime(endTime);
-                            ProfileFragment.vehicleList.get(i).setAvailable(avail);
-
-
-                            finish();
-                        }
-                    }
-                }
-        );
+        protected void onPostExecute(String result) {
+        }
     }
 
     private boolean DateValidation() {
