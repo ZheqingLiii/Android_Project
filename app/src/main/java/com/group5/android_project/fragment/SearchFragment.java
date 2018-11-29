@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.group5.android_project.APIUtils;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
@@ -117,11 +118,16 @@ public class SearchFragment extends Fragment {
                 Address address = (Address) addressList.get(0);
                 latlong[0] = address.getLatitude();
                 latlong[1] = address.getLongitude();
-
-//                APIUtils.downloadXML();
+//                String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByLocation?Lat=" + latlong[0] + "&Long=" + latlong[1];
+                String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarInfo?CarID=4";
+                APIUtils apiUtils = new APIUtils();
+                apiUtils.execute(url);
+//                String JSON = APIUtils.downloadXML(url);
+                System.out.print("hello");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 }
+//http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByLocation?Lat=37.338832&Long=-121.895871

@@ -176,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Log.e(TAG, "doInBackground, error downloading");
             }
 
-
             return vehicleInfo;
         }
 
