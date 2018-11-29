@@ -1,7 +1,10 @@
 package com.group5.android_project;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +12,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Locale;
 
-public class APIUtils extends AsyncTask<String, Void, String> {
+public class Utils extends AsyncTask<String, Void, String> {
     private static final String TAG = "DownloadVehicleInfo";
     String result;
 
@@ -65,5 +70,23 @@ public class APIUtils extends AsyncTask<String, Void, String> {
         }
 
         return null;
+    }
+
+    public static double[] addressToLatLong(String addressString, View view) {
+        double[] latlong = new double[2];
+
+        Geocoder geocoder = new Geocoder(view.getContext(), Locale.getDefault());
+        try {
+            List addressList = geocoder.getFromLocationName(addressString, 1);
+            if (addressList != null && addressList.size() > 0) {
+                Address address = (Address) addressList.get(0);
+                latlong[0] = address.getLatitude();
+                latlong[1] = address.getLongitude();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return latlong;
     }
 }

@@ -2,10 +2,7 @@ package com.group5.android_project;
 
 import android.app.DatePickerDialog;
 import android.os.AsyncTask;
-<<<<<<< HEAD
 import android.os.Bundle;
-=======
->>>>>>> ace73addaaf79221511b37a0f30f5c733b1f9063
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
@@ -16,7 +13,6 @@ import android.widget.DatePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.JsonParser;
 import com.group5.android_project.fragment.PostFragment;
 import com.group5.android_project.fragment.ProfileFragment;
 import com.group5.android_project.fragment.SearchFragment;
@@ -188,9 +184,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                 Log.e(TAG, "doInBackground, error downloading");
             }
 
-<<<<<<< HEAD
-            return vehicleInfo;
-=======
             ArrayList<Integer> CarIdList = new ArrayList<>();
             // get Car ID
             try {
@@ -243,7 +236,6 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             }
 
             return vehicleID;
->>>>>>> ace73addaaf79221511b37a0f30f5c733b1f9063
         }
 
         private String downloadXML(String urlPath) {
