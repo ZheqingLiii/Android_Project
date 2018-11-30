@@ -198,6 +198,12 @@ public class PostFragment extends Fragment {
             //postVehicle.setEndDate(endDate);
             postVehicle.setAvailable(avail);
 
+            //TODO: get lat and lng
+            String lat = "";
+            String lng = "";
+            postVehicle.setLat(lat);
+            postVehicle.setLng(lng);
+
             //put postVehicle to main activity
             MainActivity.postVehicle = postVehicle;
 
@@ -210,7 +216,9 @@ public class PostFragment extends Fragment {
                     + "&OwnerID=" + MainActivity.mainUser.getUid()
                     + "&PricePerDay=" + postVehicle.getPrice()
                     + "&Detail=" + postVehicle.getDetail()
-                    + "&isAvailable=" + String.valueOf(postVehicle.isAvailable());
+                    + "&isAvailable=" + String.valueOf(postVehicle.isAvailable())
+                    + "&lat=" + lat
+                    + "&lng=" + lng;
 
             Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
             PutVehicleInfo putVehicleInfo = new PutVehicleInfo();

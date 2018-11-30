@@ -301,7 +301,9 @@ public class VehicleProfileActivity extends AppCompatActivity
                                     + "&HomeCity=" + city
                                     + "&PricePerDay=" + price
                                     + "&Detail=" + detail
-                                    + "&isAvailable=" + available;
+                                    + "&isAvailable=" + available
+                                    + "&lat=" + profileVehicle.getLat()
+                                    + "&lng=" + profileVehicle.getLng();
                             Log.d(TAG, "onClick: url " + url);
                             updateVehicleInfo.execute(url);
 

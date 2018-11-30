@@ -33,6 +33,8 @@ public class Vehicle implements Parcelable {
     private String imageUrl;
     private boolean isAvailable;
     private Integer veID;
+    private String lat;
+    private String lng;
 
     public Vehicle(String model, String year, String city, String price, String detail) {
         this.model = model;
@@ -56,6 +58,8 @@ public class Vehicle implements Parcelable {
         imageUrl = source.readString();
         isAvailable = source.readInt() == 1;
         veID = source.readInt();
+        lat = source.readString();
+        lng = source.readString();
     }
 
     @Override
@@ -72,6 +76,8 @@ public class Vehicle implements Parcelable {
         dest.writeString(imageUrl);
         dest.writeInt(isAvailable ? 1 : 0);
         dest.writeInt(veID);
+        dest.writeString(lat);
+        dest.writeString(lng);
     }
 
     @Override
@@ -173,5 +179,21 @@ public class Vehicle implements Parcelable {
 
     public void setVeID(Integer veID) {
         this.veID = veID;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 }
