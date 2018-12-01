@@ -159,7 +159,8 @@ public class PostFragment extends Fragment {
         Boolean avail = switchAvail.isChecked();
 
 
-        if (model.equals("") || year.equals("") || city.equals("") || price.equals("") || detail.equals("")) {
+        if (model.equals("") || year.equals("") || city.equals("") || price.equals("") || detail.equals("")
+                || txtLocation.getText().toString().equals("")) {
             Log.d(TAG, "information incomplete");
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setTitle("Information incomplete");
@@ -208,14 +209,15 @@ public class PostFragment extends Fragment {
             MainActivity.postVehicle = postVehicle;
 
             // api
+            //a = a.replaceAll("\\s","");
             String urlPath = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/putCarInfo?"
-                    + "Model=" + postVehicle.getModel()
-                    + "&Year=" + postVehicle.getYear()
+                    + "Model=" + postVehicle.getModel().replaceAll("\\s", "")
+                    + "&Year=" + postVehicle.getYear().replaceAll("\\s", "")
                     + "&Color=Black"
-                    + "&HomeCity=" + postVehicle.getCity()
+                    + "&HomeCity=" + postVehicle.getCity().replaceAll("\\s", "")
                     + "&OwnerID=" + MainActivity.mainUser.getUid()
-                    + "&PricePerDay=" + postVehicle.getPrice()
-                    + "&Detail=" + postVehicle.getDetail()
+                    + "&PricePerDay=" + postVehicle.getPrice().replaceAll("\\s", "")
+                    + "&Detail=" + postVehicle.getDetail().replaceAll("\\s", "")
                     + "&isAvailable=" + String.valueOf(postVehicle.isAvailable())
                     + "&lat=" + lat
                     + "&lng=" + lng;

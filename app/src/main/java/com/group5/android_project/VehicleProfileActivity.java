@@ -124,9 +124,13 @@ public class VehicleProfileActivity extends AppCompatActivity
         txtStartTime.setText(profileVehicle.getStartTime());
         txtEndTime.setText(profileVehicle.getEndTime());
         switchAvail.setChecked(profileVehicle.isAvailable());
+        /*
         if (profileVehicle.getImageUrl() != null && profileVehicle.getImageUrl().length() > 2) {
             webView.loadUrl(profileVehicle.getImageUrl());
         }
+        else {
+            webView.loadUrl("https://freeiconshop.com/wp-content/uploads/edd/car-flat.png");
+        }*/
 
         carID = profileVehicle.getVeID().toString();
         btnUpload = findViewById(R.id.button_image);
@@ -212,6 +216,7 @@ public class VehicleProfileActivity extends AppCompatActivity
             Log.d("FTP code: ", "Success");
             String imageUrl = "http://18.219.38.137/home/team5/ftp/files/" + imageName;
             profileVehicle.setImageUrl(imageUrl);
+            Log.d(TAG, "uploadFile: imgUrl " + imageUrl);
 
         } catch (Exception e) {
             Log.d("FTP code: ", "Error1");
@@ -296,11 +301,11 @@ public class VehicleProfileActivity extends AppCompatActivity
                             UpdateVehicleInfo updateVehicleInfo = new UpdateVehicleInfo();
                             String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/updateCarInfoBulk?CarID="
                                     + ProfileFragment.vehicleList.get(i).getVeID()
-                                    + "&Model=" + model
-                                    + "&Year=" + year
-                                    + "&HomeCity=" + city
-                                    + "&PricePerDay=" + price
-                                    + "&Detail=" + detail
+                                    + "&Model=" + model.replaceAll("\\s", "")
+                                    + "&Year=" + year.replaceAll("\\s", "")
+                                    + "&HomeCity=" + city.replaceAll("\\s", "")
+                                    + "&PricePerDay=" + price.replaceAll("\\s", "")
+                                    + "&Detail=" + detail.replaceAll("\\s", "")
                                     + "&isAvailable=" + available
                                     + "&lat=" + profileVehicle.getLat()
                                     + "&lng=" + profileVehicle.getLng();
