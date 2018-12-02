@@ -2,7 +2,6 @@ package com.group5.android_project;
 
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
@@ -15,27 +14,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 
-public class Utils extends AsyncTask<String, Void, String> {
+public class Utils {
     private static final String TAG = "DownloadVehicleInfo";
-    String result;
-
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        this.result = s;
-        Log.d(TAG, "onPostExecute parameter is " + s);
-    }
-
-    @Override
-    protected String doInBackground(String... strings) {
-        Log.d(TAG, "do in background");
-        String vehicleInfo = downloadXML(strings[0]);
-        if (vehicleInfo == null) {
-            Log.e(TAG, "doInBackground, error downloading");
-        }
-
-        return vehicleInfo;
-    }
 
     public static String downloadXML(String urlPath) {
         StringBuilder xmlResult = new StringBuilder();

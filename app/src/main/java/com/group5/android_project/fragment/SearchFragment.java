@@ -1,8 +1,13 @@
 package com.group5.android_project.fragment;
 
+import android.app.Activity;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +16,22 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.group5.android_project.CarSearchAdapter;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
 import com.group5.android_project.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class SearchFragment extends Fragment {
-    View view;
+    private View view;
     ConstraintLayout searchLayout;
     RelativeLayout searchDropdown;
     TextView dropdownArrow;
@@ -32,6 +46,8 @@ public class SearchFragment extends Fragment {
     double[] latlong = new double[2];
 
     boolean isDropdownActive = false;
+
+    Utils utils = new Utils();
 
     public SearchFragment() {
     }
@@ -88,9 +104,6 @@ public class SearchFragment extends Fragment {
 
         search();
 
-        carListView = view.findViewById(R.id.carListView);
-        // TODO: setup adapter
-
         return view;
     }
 
@@ -106,37 +119,123 @@ public class SearchFragment extends Fragment {
     }
 
     public void search() {
-        String address = locationTextView.getText().toString();
-        double[] latLong = Utils.addressToLatLong(address, view);
-        System.out.print(latLong);
-//        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-//        try {
-//            List addressList = geocoder.getFromLocationName(locationTextView.getText().toString(), 1);
-//            if (addressList != null && addressList.size() > 0) {
-//                Address address = (Address) addressList.get(0);
-//                latlong[0] = address.getLatitude();
-//                latlong[1] = address.getLongitude();
-////                String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByLocation?Lat=" + latlong[0] + "&Long=" + latlong[1];
-//                URL url = new URL("http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarInfo?CarID=4");
-//                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//                con.setRequestMethod("GET");
-//                int status = con.getResponseCode();
-//                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-//                String inputLine;
-//                StringBuffer content = new StringBuffer();
-//                while ((inputLine = in.readLine()) != null) {
-//                    content.append(inputLine);
-//                }
-//                in.close();
-//                con.disconnect();
-////                Utils apiUtils = new Utils();
-////                apiUtils.execute(url);
-////                String JSON = Utils.downloadXML(url);
-//                System.out.print("hello");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        String addressString = locationTextView.getText().toString();
+        double[] latlong = new double[2];
+
+        Geocoder geocoder = new Geocoder(view.getContext(), Locale.getDefault());
+        try {
+            List addressList = geocoder.getFromLocationName(addressString, 1);
+            if (addressList != null && addressList.size() > 0) {
+                Address address = (Address) addressList.get(0);
+                latlong[0] = address.getLatitude();
+                latlong[1] = address.getLongitude();
+
+                String url = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByLocation?Lat=" + latlong[0] + "&Long=" + latlong[1];
+                DownloadVehicleInfo downloadVeInfo = new DownloadVehicleInfo(getActivity(), view);
+                downloadVeInfo.execute(url);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public class DownloadVehicleInfo extends AsyncTask<String, Void, String> {
+        private static final String TAG = "DownloadVehicleInfo";
+        Activity ctx;
+        View view;
+
+        public DownloadVehicleInfo(Activity ctx, View view) {
+            this.ctx = ctx;
+            this.view = view;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            String carList = s;
+
+            ArrayList<Integer> carIdList = new ArrayList<Integer>();
+            ArrayList<Double> carDistanceList = new ArrayList<Double>();
+            ArrayList<String> carNameList = new ArrayList<String>();
+            ArrayList<Double> carPriceList = new ArrayList<Double>();
+            ArrayList<String> carImgURL = new ArrayList<String>();
+
+            // get Car ID
+            try {
+                JSONArray jsonArray = new JSONArray(carList);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject car = jsonArray.getJSONObject(i);
+                    int id = car.getInt("CarID");
+                    carIdList.add(id);
+                    carDistanceList.add(car.getDouble("distance"));
+
+                    String carUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarInfo?CarID=" + id;
+                    String carInfo = Utils.downloadXML(carUrl);
+                    JSONArray carArray = new JSONArray(carInfo);
+                    car = carArray.getJSONObject(0);
+
+                    StringBuilder nameBuffer = new StringBuilder();
+                    nameBuffer.append(car.getString("Color"))
+                            .append(" ").append(car.getString("Year"))
+                            .append(" ").append(car.getString("Model"));
+                    carNameList.add(nameBuffer.toString());
+
+                    carPriceList.add(car.optDouble("PricePerDay"));
+
+                    carImgURL.add(car.optString("CarPhotoURL"));
+                }
+
+                CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
+                ListView carListView = view.findViewById(R.id.carListView);
+                carListView.setAdapter(adapter);
+            } catch (Exception e) {
+                Log.d(TAG, "doInBackground: parse CarID, JSON array creation failed");
+            }
+        }
+
+                @Override
+        protected String doInBackground(String... strings) {
+            String carList = Utils.downloadXML(strings[0]);
+
+//            ArrayList<Integer> carIdList = new ArrayList<Integer>();
+//            ArrayList<Double> carDistanceList = new ArrayList<Double>();
+//            ArrayList<String> carNameList = new ArrayList<String>();
+//            ArrayList<Double> carPriceList = new ArrayList<Double>();
+//            ArrayList<String> carImgURL = new ArrayList<String>();
+//
+            // get Car ID
+            try {
+                JSONArray jsonArray = new JSONArray(carList);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject car = jsonArray.getJSONObject(i);
+                    int id = car.getInt("CarID");
+//                    carIdList.add(id);
+//                    carDistanceList.add(car.getDouble("distance"));
+
+                    String carUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarInfo?CarID=" + id;
+                    String carInfo = Utils.downloadXML(carUrl);
+//                    JSONArray carArray = new JSONArray(carInfo);
+//                    car = carArray.getJSONObject(0);
+//
+//                    StringBuilder nameBuffer = new StringBuilder();
+//                    nameBuffer.append(car.getString("Color"))
+//                            .append(" ").append(car.getString("Year"))
+//                            .append(" ").append(car.getString("Model"));
+//                    carNameList.add(nameBuffer.toString());
+//
+//                    carPriceList.add(car.optDouble("PricePerDay"));
+//
+//                    carImgURL.add(car.optString("CarPhotoURL"));
+                }
+
+//                CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
+//                ListView carListView = view.findViewById(R.id.carListView);
+//                carListView.setAdapter(adapter);
+            } catch (Exception e) {
+                Log.d(TAG, "doInBackground: parse CarID, JSON array creation failed");
+            }
+
+            return carList;
+        }
     }
 }
 //http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByLocation?Lat=37.338832&Long=-121.895871
