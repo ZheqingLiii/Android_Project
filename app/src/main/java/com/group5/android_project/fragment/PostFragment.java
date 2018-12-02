@@ -301,18 +301,20 @@ public class PostFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             Log.d(TAG, "do in background starts with " + strings[0]);
-            return PutVehicleInformation(strings[0]);
+            String g = downloadXML("");
+
+            return downloadXML(strings[0]);
         }
 
 
-        private String PutVehicleInformation(String urlPath) {
+        private String downloadXML(String urlPath) {
             StringBuilder xmlResult = new StringBuilder();
 
             try {
                 URL url = new URL(urlPath);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 int response = connection.getResponseCode();
-                Log.d(TAG, "PutVehicleInfo response: " + response);
+                Log.d(TAG, "downloadXML response: " + response);
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
@@ -330,14 +332,14 @@ public class PostFragment extends Fragment {
 
                 reader.close();
 
-                Log.d(TAG, "PutVehicleInfo: Result: " + xmlResult.toString());
+                Log.d(TAG, "downloadXML: Result: " + xmlResult.toString());
 
             } catch (MalformedURLException e) {
-                Log.e(TAG, "PutVehicleInfo: Invalid URL" + e.getMessage());
+                Log.e(TAG, "downloadXML: Invalid URL" + e.getMessage());
             } catch (IOException e) {
-                Log.e(TAG, "PutVehicleInfo: IOException reading data: " + e.getMessage());
+                Log.e(TAG, "downloadXML: IOException reading data: " + e.getMessage());
             } catch (SecurityException e) {
-                Log.e(TAG, "PutVehicleInfo: Security exception, " + e.getMessage());
+                Log.e(TAG, "downloadXML: Security exception, " + e.getMessage());
                 //e.printStackTrace();
             }
 

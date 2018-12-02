@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class Utils extends AsyncTask<String, Void, String> {
-    private static final String TAG = "DownloadVehicleInfo";
+    private static final String TAG = "Utils";
     String result;
 
     @Override

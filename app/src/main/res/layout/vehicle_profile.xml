@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
+            android:background="#FFF5EE"
             android:text="IMAGE UPLOAD" />
 
 
@@ -152,6 +153,7 @@
                 android:id="@+id/btnSetStartDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#F0F8FF"
                 android:text="@string/setDate" />
 
             <TextView
@@ -167,6 +169,7 @@
                 android:id="@+id/btnStartTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#F0F8FF"
                 android:text="@string/setTime" />
         </LinearLayout>
 
@@ -209,6 +212,7 @@
                 android:id="@+id/btnSetEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#F0F8FF"
                 android:text="@string/setDate" />
 
             <TextView
@@ -224,6 +228,7 @@
                 android:id="@+id/btnEndTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#F0F8FF"
                 android:text="@string/setTime" />
         </LinearLayout>
 
@@ -270,6 +275,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:text="@string/avail"
+                android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 
@@ -284,6 +290,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
+                android:background="#FAEBD7"
+                android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
         </LinearLayout>
