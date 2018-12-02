@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.group5.android_project.CarSearchAdapter;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
@@ -45,6 +46,10 @@ public class SearchFragment extends Fragment {
     double[] latlong = new double[2];
 
     boolean isDropdownActive = false;
+
+    private ArrayList<Integer> carIdList;
+    private ArrayList<Double> carDistanceList, carPriceList;
+    private ArrayList<String> carNameList, carImgURL;
 
     Utils utils = new Utils();
 
@@ -150,7 +155,11 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+//            super.onPostExecute(s);
+
+            CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
+            ListView carListView = view.findViewById(R.id.carListView);
+            carListView.setAdapter(adapter);
             Log.d(TAG, "onPostExecute parameter is " + s);
         }
 
@@ -158,11 +167,17 @@ public class SearchFragment extends Fragment {
         protected String doInBackground(String... strings) {
             String carList = Utils.downloadXML(strings[0]);
 
-            ArrayList<Integer> carIdList = new ArrayList<Integer>();
-            ArrayList<Double> carDistanceList = new ArrayList<Double>();
-            ArrayList<String> carNameList = new ArrayList<String>();
-            ArrayList<Double> carPriceList = new ArrayList<Double>();
-            ArrayList<String> carImgURL = new ArrayList<String>();
+//            ArrayList<Integer> carIdList = new ArrayList<Integer>();
+//            ArrayList<Double> carDistanceList = new ArrayList<Double>();
+//            ArrayList<String> carNameList = new ArrayList<String>();
+//            ArrayList<Double> carPriceList = new ArrayList<Double>();
+//            ArrayList<String> carImgURL = new ArrayList<String>();
+
+            carIdList = new ArrayList<Integer>();
+            carDistanceList = new ArrayList<Double>();
+            carNameList = new ArrayList<String>();
+            carPriceList = new ArrayList<Double>();
+            carImgURL = new ArrayList<String>();
 
             // get Car ID
             try {
@@ -200,4 +215,3 @@ public class SearchFragment extends Fragment {
         }
     }
 }
-//http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarsByLocation?Lat=37.338832&Long=-121.895871

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class CarSearchAdapter extends ArrayAdapter<String> {
@@ -47,7 +48,8 @@ public class CarSearchAdapter extends ArrayAdapter<String> {
 
 //        carImage.setBac
         carName.setText(names.get(position));
-        carPrice.setText(prices.get(position).toString());
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+        carPrice.setText(currencyFormatter.format(prices.get(position)) + "/day");
         double distance = Math.round(distances.get(position) * 10) / 10;
         carDistance.setText(distance + "");
 
