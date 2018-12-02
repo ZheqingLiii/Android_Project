@@ -149,9 +149,58 @@ public class SearchFragment extends Fragment {
             this.view = view;
         }
 
+//        @Override
+//        protected void onPostExecute(String s) {
+//            String carList = s;
+//
+//            ArrayList<Integer> carIdList = new ArrayList<Integer>();
+//            ArrayList<Double> carDistanceList = new ArrayList<Double>();
+//            ArrayList<String> carNameList = new ArrayList<String>();
+//            ArrayList<Double> carPriceList = new ArrayList<Double>();
+//            ArrayList<String> carImgURL = new ArrayList<String>();
+//
+//            // get Car ID
+//            try {
+//                JSONArray jsonArray = new JSONArray(carList);
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    JSONObject car = jsonArray.getJSONObject(i);
+//                    int id = car.getInt("CarID");
+//                    carIdList.add(id);
+//                    carDistanceList.add(car.getDouble("distance"));
+//
+//                    String carUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarInfo?CarID=" + id;
+//                    String carInfo = Utils.downloadXML(carUrl);
+//                    JSONArray carArray = new JSONArray(carInfo);
+//                    car = carArray.getJSONObject(0);
+//
+//                    StringBuilder nameBuffer = new StringBuilder();
+//                    nameBuffer.append(car.getString("Color"))
+//                            .append(" ").append(car.getString("Year"))
+//                            .append(" ").append(car.getString("Model"));
+//                    carNameList.add(nameBuffer.toString());
+//
+//                    carPriceList.add(car.optDouble("PricePerDay"));
+//
+//                    carImgURL.add(car.optString("CarPhotoURL"));
+//                }
+//
+//                CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
+//                ListView carListView = view.findViewById(R.id.carListView);
+//                carListView.setAdapter(adapter);
+//            } catch (Exception e) {
+//                Log.d(TAG, "doInBackground: parse CarID, JSON array creation failed");
+//            }
+//        }
+
+
         @Override
         protected void onPostExecute(String s) {
-            String carList = s;
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String carList = Utils.downloadXML(strings[0]);
 
             ArrayList<Integer> carIdList = new ArrayList<Integer>();
             ArrayList<Double> carDistanceList = new ArrayList<Double>();
@@ -187,49 +236,6 @@ public class SearchFragment extends Fragment {
                 CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
                 ListView carListView = view.findViewById(R.id.carListView);
                 carListView.setAdapter(adapter);
-            } catch (Exception e) {
-                Log.d(TAG, "doInBackground: parse CarID, JSON array creation failed");
-            }
-        }
-
-                @Override
-        protected String doInBackground(String... strings) {
-            String carList = Utils.downloadXML(strings[0]);
-
-//            ArrayList<Integer> carIdList = new ArrayList<Integer>();
-//            ArrayList<Double> carDistanceList = new ArrayList<Double>();
-//            ArrayList<String> carNameList = new ArrayList<String>();
-//            ArrayList<Double> carPriceList = new ArrayList<Double>();
-//            ArrayList<String> carImgURL = new ArrayList<String>();
-//
-            // get Car ID
-            try {
-                JSONArray jsonArray = new JSONArray(carList);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject car = jsonArray.getJSONObject(i);
-                    int id = car.getInt("CarID");
-//                    carIdList.add(id);
-//                    carDistanceList.add(car.getDouble("distance"));
-
-                    String carUrl = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/getCarInfo?CarID=" + id;
-                    String carInfo = Utils.downloadXML(carUrl);
-//                    JSONArray carArray = new JSONArray(carInfo);
-//                    car = carArray.getJSONObject(0);
-//
-//                    StringBuilder nameBuffer = new StringBuilder();
-//                    nameBuffer.append(car.getString("Color"))
-//                            .append(" ").append(car.getString("Year"))
-//                            .append(" ").append(car.getString("Model"));
-//                    carNameList.add(nameBuffer.toString());
-//
-//                    carPriceList.add(car.optDouble("PricePerDay"));
-//
-//                    carImgURL.add(car.optString("CarPhotoURL"));
-                }
-
-//                CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
-//                ListView carListView = view.findViewById(R.id.carListView);
-//                carListView.setAdapter(adapter);
             } catch (Exception e) {
                 Log.d(TAG, "doInBackground: parse CarID, JSON array creation failed");
             }
