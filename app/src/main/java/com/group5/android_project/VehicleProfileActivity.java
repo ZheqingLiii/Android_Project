@@ -1,5 +1,6 @@
 package com.group5.android_project;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -18,7 +19,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -124,13 +128,15 @@ public class VehicleProfileActivity extends AppCompatActivity
         txtStartTime.setText(profileVehicle.getStartTime());
         txtEndTime.setText(profileVehicle.getEndTime());
         switchAvail.setChecked(profileVehicle.isAvailable());
-        /*
-        if (profileVehicle.getImageUrl() != null && profileVehicle.getImageUrl().length() > 2) {
-            webView.loadUrl(profileVehicle.getImageUrl());
+
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        if (profileVehicle.getImageUrl() != null && profileVehicle.getImageUrl().length() > 1) {
+            String setUrl = "http://18.219.38.137/home/team5/ftp/files/CarID" + profileVehicle.getVeID().toString() + ".jpg";
+            webView.loadUrl(setUrl);
+        } else {
+            webView.loadUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdAGzADdM8qUH4OmLwHy10u9vXicBdaHPpOCj-G4XWNdWl38Oa");
         }
-        else {
-            webView.loadUrl("https://freeiconshop.com/wp-content/uploads/edd/car-flat.png");
-        }*/
 
         carID = profileVehicle.getVeID().toString();
         btnUpload = findViewById(R.id.button_image);
@@ -216,7 +222,6 @@ public class VehicleProfileActivity extends AppCompatActivity
             Log.d("FTP code: ", "Success");
             String imageUrl = "http://18.219.38.137/home/team5/ftp/files/" + imageName;
             profileVehicle.setImageUrl(imageUrl);
-            Log.d(TAG, "uploadFile: imgUrl " + imageUrl);
 
         } catch (Exception e) {
             Log.d("FTP code: ", "Error1");
@@ -281,8 +286,6 @@ public class VehicleProfileActivity extends AppCompatActivity
                         } else {
                             //save and go back to profile
                             int i = getIntent().getIntExtra("vehicleIndex", 0);
-                            Log.d(TAG, txtModel.getText().toString());
-                            Log.d(TAG, "TEST " + ProfileFragment.vehicleList.get(i).getVeID().toString());
 
                             String model = txtModel.getText().toString();
                             String year = txtYear.getText().toString();
@@ -325,6 +328,7 @@ public class VehicleProfileActivity extends AppCompatActivity
                             ProfileFragment.vehicleList.get(i).setStartTime(startTime);
                             ProfileFragment.vehicleList.get(i).setEndTime(endTime);
                             ProfileFragment.vehicleList.get(i).setAvailable(avail);
+                            ProfileFragment.vehicleList.get(i).setImageUrl(profileVehicle.getImageUrl());
 
 
                             finish();
@@ -392,50 +396,6 @@ public class VehicleProfileActivity extends AppCompatActivity
         }
     }
 
-    private class Post extends AsyncTask<Integer, Integer, Integer> {
-        protected void onPreExecute() {
-        }
-
-        @Override
-        protected Integer doInBackground(Integer... arg) {
-            uploadFile(new File(file.getPath()));
-            return 0;
-        }
-
-        protected void onPostExecute(String result) {
-        }
-    }
-
-    private boolean DateValidation() {
-        String startDate = txtStartDate.getText().toString();
-        String endDate = txtEndDate.getText().toString();
-        if (startDate.length() < 10 || endDate.length() < 10) {
-            return true;
-        }
-        int startyear = Integer.valueOf(startDate.substring(6, 10));
-        int endyear = Integer.valueOf(endDate.substring(6, 10));
-        if (startyear > endyear) {
-            return false;
-        }
-        if (startyear < endyear) {
-            return true;
-        }
-
-        int startmonth = Integer.valueOf(startDate.substring(3, 5));
-        int endmonth = Integer.valueOf(endDate.substring(3, 5));
-        if (startmonth > endmonth) {
-            return false;
-        }
-        if (startmonth < endmonth) {
-            return true;
-        }
-
-        int startday = Integer.valueOf(startDate.substring(0, 2));
-        int endday = Integer.valueOf(endDate.substring(0, 2));
-        return startday < endday;
-    }
-
-
     private static class UpdateVehicleInfo extends AsyncTask<String, Void, String> {
         private static final String TAG = "UpdateVehicleInfo";
 
@@ -448,7 +408,9 @@ public class VehicleProfileActivity extends AppCompatActivity
         @Override
         protected String doInBackground(String... strings) {
             Log.d(TAG, "do in background starts with " + strings[0]);
-            return UpdateVeInfo(strings[0]);
+
+            String updateBulk = UpdateVeInfo(strings[0]);
+            return updateBulk;
         }
 
 
@@ -490,6 +452,55 @@ public class VehicleProfileActivity extends AppCompatActivity
 
             return xmlResult.toString();
 
+        }
+
+
+    }
+
+    private boolean DateValidation() {
+        String startDate = txtStartDate.getText().toString();
+        String endDate = txtEndDate.getText().toString();
+        if (startDate.length() < 10 || endDate.length() < 10) {
+            return true;
+        }
+        int startyear = Integer.valueOf(startDate.substring(6, 10));
+        int endyear = Integer.valueOf(endDate.substring(6, 10));
+        if (startyear > endyear) {
+            return false;
+        }
+        if (startyear < endyear) {
+            return true;
+        }
+
+        int startmonth = Integer.valueOf(startDate.substring(3, 5));
+        int endmonth = Integer.valueOf(endDate.substring(3, 5));
+        if (startmonth > endmonth) {
+            return false;
+        }
+        if (startmonth < endmonth) {
+            return true;
+        }
+
+        int startday = Integer.valueOf(startDate.substring(0, 2));
+        int endday = Integer.valueOf(endDate.substring(0, 2));
+        return startday < endday;
+    }
+
+    private class Post extends AsyncTask<Integer, Integer, Integer> {
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... arg) {
+            uploadFile(new File(file.getPath()));
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            webView.getSettings().setLoadWithOverviewMode(true);
+            webView.getSettings().setUseWideViewPort(true);
+            webView.loadUrl(profileVehicle.getImageUrl());
         }
     }
 
