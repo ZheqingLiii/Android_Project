@@ -43,7 +43,7 @@ public class CarSearchAdapter extends ArrayAdapter<String> {
         ImageView carImage = (ImageView) row.findViewById(R.id.carImage);
         TextView carName = (TextView) row.findViewById(R.id.carName);
         TextView carPrice = (TextView) row.findViewById(R.id.carPrice);
-        TextView carDistance = (TextView) row.findViewById(R.id.distance);
+        TextView carDistance = (TextView) row.findViewById(R.id.distanceTextView);
 
 //        carImage.setBac
         carName.setText(names.get(position));

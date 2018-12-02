@@ -1,49 +1,33 @@
 package com.group5.android_project.fragment;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
+import android.location.Address;
+import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
-
-import com.group5.android_project.BuildConfig;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.R;
 import com.group5.android_project.Vehicle;
 
-
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import java.util.List;
+import java.util.Locale;
 
 
 public class PostFragment extends Fragment {
@@ -202,56 +186,71 @@ public class PostFragment extends Fragment {
             //TODO: get lat and lng
             String lat = "";
             String lng = "";
-            postVehicle.setLat(lat);
-            postVehicle.setLng(lng);
+//            postVehicle.setLat(lat);
+//            postVehicle.setLng(lng);
 
-            //put postVehicle to main activity
-            MainActivity.postVehicle = postVehicle;
+            String addressString = txtLocation.getText().toString();
+            double[] latlong = new double[2];
 
-            // api
-            //a = a.replaceAll("\\s","");
-            String urlPath = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/putCarInfo?"
-                    + "Model=" + postVehicle.getModel().replaceAll("\\s", "")
-                    + "&Year=" + postVehicle.getYear().replaceAll("\\s", "")
-                    + "&Color=Black"
-                    + "&HomeCity=" + postVehicle.getCity().replaceAll("\\s", "")
-                    + "&OwnerID=" + MainActivity.mainUser.getUid()
-                    + "&PricePerDay=" + postVehicle.getPrice().replaceAll("\\s", "")
-                    + "&Detail=" + postVehicle.getDetail().replaceAll("\\s", "")
-                    + "&isAvailable=" + String.valueOf(postVehicle.isAvailable())
-                    + "&lat=" + lat
-                    + "&lng=" + lng;
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+            try {
+                List addressList = geocoder.getFromLocationName(addressString, 1);
+                if (addressList != null && addressList.size() > 0) {
+                    Address address = (Address) addressList.get(0);
+                    lat = address.getLatitude() + "";
+                    lng = address.getLongitude() + "";
 
-            Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
-            PutVehicleInfo putVehicleInfo = new PutVehicleInfo();
-            putVehicleInfo.execute(urlPath);
+                    //put postVehicle to main activity
+                    MainActivity.postVehicle = postVehicle;
+
+                    // api
+                    //a = a.replaceAll("\\s","");
+                    String urlPath = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/putCarInfo?"
+                            + "Model=" + postVehicle.getModel().replaceAll("\\s", "")
+                            + "&Year=" + postVehicle.getYear().replaceAll("\\s", "")
+                            + "&Color=Black"
+                            + "&HomeCity=" + postVehicle.getCity().replaceAll("\\s", "")
+                            + "&OwnerID=" + MainActivity.mainUser.getUid()
+                            + "&PricePerDay=" + postVehicle.getPrice().replaceAll("\\s", "")
+                            + "&Detail=" + postVehicle.getDetail().replaceAll("\\s", "")
+                            + "&isAvailable=" + String.valueOf(postVehicle.isAvailable())
+                            + "&lat=" + lat
+                            + "&lng=" + lng;
+
+                    Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
+                    PutVehicleInfo putVehicleInfo = new PutVehicleInfo();
+                    putVehicleInfo.execute(urlPath);
 
 
-            Log.d(TAG, "Submit a new vehicle");
-            AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-            alert.setTitle("Successful");
-            alert.setMessage("Your new car is been added");
-            alert.setCancelable(false);
-            alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //txtStartDate.setText("");
-                    //txtEndDate.setText("");
-                    txtModel.setText("");
-                    txtYear.setText("");
-                    txtCity.setText("");
-                    txtPrice.setText("");
-                    txtDetail.setText("");
-                    txtLocation.setText("");
-                    switchAvail.setChecked(true);
+                    Log.d(TAG, "Submit a new vehicle");
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                    alert.setTitle("Successful");
+                    alert.setMessage("Your new car is been added");
+                    alert.setCancelable(false);
+                    alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //txtStartDate.setText("");
+                            //txtEndDate.setText("");
+                            txtModel.setText("");
+                            txtYear.setText("");
+                            txtCity.setText("");
+                            txtPrice.setText("");
+                            txtDetail.setText("");
+                            txtLocation.setText("");
+                            switchAvail.setChecked(true);
 
-                    //clear postVehicle
-                    postVehicle = null;
-                    dialog.cancel();
+                            //clear postVehicle
+                            postVehicle = null;
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
                 }
-            });
-            AlertDialog alertDialog = alert.create();
-            alertDialog.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
