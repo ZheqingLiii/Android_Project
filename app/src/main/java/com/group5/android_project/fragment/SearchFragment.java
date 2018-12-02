@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.group5.android_project.CarSearchAdapter;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
@@ -190,8 +189,8 @@ public class SearchFragment extends Fragment {
                     carImgURL.add(car.optString("CarPhotoURL"));
                 }
 
-                CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
-                ListView carListView = view.findViewById(R.id.carListView);
+//                CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
+//                ListView carListView = view.findViewById(R.id.carListView);
 //                carListView.setAdapter(adapter);
             } catch (Exception e) {
                 Log.d(TAG, "doInBackground: parse CarID, JSON array creation failed");
