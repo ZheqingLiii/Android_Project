@@ -1,41 +1,50 @@
 package com.group5.android_project.fragment;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
-import com.group5.android_project.DatePickerFragment;
+
+import com.group5.android_project.BuildConfig;
 import com.group5.android_project.MainActivity;
-import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
-import com.group5.android_project.TimePickerFragment;
 import com.group5.android_project.Vehicle;
-import com.group5.android_project.VehicleProfileActivity;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 
 public class PostFragment extends Fragment {
 
@@ -50,7 +59,9 @@ public class PostFragment extends Fragment {
     private EditText txtPrice;
     private EditText txtDetail;
     private Switch switchAvail;
+    private EditText txtLocation;
     public Vehicle postVehicle;
+
 
     public PostFragment() {
     }
@@ -72,11 +83,20 @@ public class PostFragment extends Fragment {
         txtDetail = v.findViewById(R.id.txtDetail);
         txtStartDate = v.findViewById(R.id.selectedStartDate);
         txtEndDate = v.findViewById(R.id.selectedEndDate);
+        txtLocation = v.findViewById(R.id.txtLocation);
         btnSubmit = v.findViewById(R.id.btnSubmit);
         switchAvail = v.findViewById(R.id.switchAvail);
         switchAvail.setChecked(true);
+        //webView = v.findViewById(R.id.webViewCar);
+
+
+
+
+
+        /*
         Button btnSetStart = v.findViewById(R.id.btnSetStartDate);
         Button btnSetEnd = v.findViewById(R.id.btnSetEndDate);
+
 
         btnSetStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +116,8 @@ public class PostFragment extends Fragment {
             }
         });
 
+        */
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +127,9 @@ public class PostFragment extends Fragment {
 
         return v;
     }
+
+
+
 
 
     public void setSearchStartDate(String date) {
@@ -121,6 +146,7 @@ public class PostFragment extends Fragment {
         String city = txtCity.getText().toString();
         String price = txtPrice.getText().toString();
         String detail = txtDetail.getText().toString();
+        /*
         String startDate = txtStartDate.getText().toString();
         if (startDate.length() < 1) {
             startDate = "";
@@ -129,10 +155,12 @@ public class PostFragment extends Fragment {
         if (endDate.length() < 1) {
             endDate = "";
         }
+        */
         Boolean avail = switchAvail.isChecked();
 
 
-        if (model.equals("") || year.equals("") || city.equals("") || price.equals("") || detail.equals("")) {
+        if (model.equals("") || year.equals("") || city.equals("") || price.equals("") || detail.equals("")
+                || txtLocation.getText().toString().equals("")) {
             Log.d(TAG, "information incomplete");
             AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
             alert.setTitle("Information incomplete");
@@ -147,6 +175,7 @@ public class PostFragment extends Fragment {
             AlertDialog alertDialog = alert.create();
             alertDialog.show();
         }
+        /*
         //if available, and start date is later than end date, show alert
         else if (avail && (!DateValidation(startDate, endDate))) {
             Log.d(TAG, "date validation failed");
@@ -163,25 +192,35 @@ public class PostFragment extends Fragment {
             AlertDialog alertDialog = alert.create();
             alertDialog.show();
 
-        } else {
+        } */
+        else {
             postVehicle = new Vehicle(model, year, city, price, detail);
-            postVehicle.setStartDate(startDate);
-            postVehicle.setEndDate(endDate);
+            //postVehicle.setStartDate(startDate);
+            //postVehicle.setEndDate(endDate);
             postVehicle.setAvailable(avail);
+
+            //TODO: get lat and lng
+            String lat = "";
+            String lng = "";
+            postVehicle.setLat(lat);
+            postVehicle.setLng(lng);
 
             //put postVehicle to main activity
             MainActivity.postVehicle = postVehicle;
 
             // api
+            //a = a.replaceAll("\\s","");
             String urlPath = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/putCarInfo?"
-                    + "Model=" + postVehicle.getModel()
-                    + "&Year=" + postVehicle.getYear()
+                    + "Model=" + postVehicle.getModel().replaceAll("\\s", "")
+                    + "&Year=" + postVehicle.getYear().replaceAll("\\s", "")
                     + "&Color=Black"
-                    + "&HomeCity=" + postVehicle.getCity()
+                    + "&HomeCity=" + postVehicle.getCity().replaceAll("\\s", "")
                     + "&OwnerID=" + MainActivity.mainUser.getUid()
-                    + "&PricePerDay=" + postVehicle.getPrice()
-                    + "&Detail=" + postVehicle.getDetail()
-                    + "&isAvailable=" + String.valueOf(postVehicle.isAvailable());
+                    + "&PricePerDay=" + postVehicle.getPrice().replaceAll("\\s", "")
+                    + "&Detail=" + postVehicle.getDetail().replaceAll("\\s", "")
+                    + "&isAvailable=" + String.valueOf(postVehicle.isAvailable())
+                    + "&lat=" + lat
+                    + "&lng=" + lng;
 
             Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
             PutVehicleInfo putVehicleInfo = new PutVehicleInfo();
@@ -196,13 +235,14 @@ public class PostFragment extends Fragment {
             alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    txtStartDate.setText("");
-                    txtEndDate.setText("");
+                    //txtStartDate.setText("");
+                    //txtEndDate.setText("");
                     txtModel.setText("");
                     txtYear.setText("");
                     txtCity.setText("");
                     txtPrice.setText("");
                     txtDetail.setText("");
+                    txtLocation.setText("");
                     switchAvail.setChecked(true);
 
                     //clear postVehicle
@@ -248,26 +288,33 @@ public class PostFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG, "onPostExecute parameter is " + s);
-            // TODO: add CarID from response s
-            Integer carId = 0;
-            MainActivity.postVehicle.setVeID(carId);
+            //add CarID from response
+            if (s.length() == 0) {
+                Log.d(TAG, "onPostExecute: No car ID returned");
+            } else {
+                Integer carId = Integer.valueOf(s);
+                MainActivity.postVehicle.setVeID(carId);
+            }
+
         }
 
         @Override
         protected String doInBackground(String... strings) {
             Log.d(TAG, "do in background starts with " + strings[0]);
-            return PutVehicleInformation(strings[0]);
+            String g = downloadXML("");
+
+            return downloadXML(strings[0]);
         }
 
 
-        private String PutVehicleInformation(String urlPath) {
+        private String downloadXML(String urlPath) {
             StringBuilder xmlResult = new StringBuilder();
 
             try {
                 URL url = new URL(urlPath);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 int response = connection.getResponseCode();
-                Log.d(TAG, "PutVehicleInfo response: " + response);
+                Log.d(TAG, "downloadXML response: " + response);
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
@@ -285,14 +332,14 @@ public class PostFragment extends Fragment {
 
                 reader.close();
 
-                Log.d(TAG, "PutVehicleInfo: Result: " + xmlResult.toString());
+                Log.d(TAG, "downloadXML: Result: " + xmlResult.toString());
 
             } catch (MalformedURLException e) {
-                Log.e(TAG, "PutVehicleInfo: Invalid URL" + e.getMessage());
+                Log.e(TAG, "downloadXML: Invalid URL" + e.getMessage());
             } catch (IOException e) {
-                Log.e(TAG, "PutVehicleInfo: IOException reading data: " + e.getMessage());
+                Log.e(TAG, "downloadXML: IOException reading data: " + e.getMessage());
             } catch (SecurityException e) {
-                Log.e(TAG, "PutVehicleInfo: Security exception, " + e.getMessage());
+                Log.e(TAG, "downloadXML: Security exception, " + e.getMessage());
                 //e.printStackTrace();
             }
 

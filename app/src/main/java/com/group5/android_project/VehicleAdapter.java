@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,7 +62,7 @@ public class VehicleAdapter<T extends Vehicle> extends ArrayAdapter {
         viewHolder.tvCity.setText(curr.getCity());
         viewHolder.tvDetail.setText(curr.getDetail());
 
-        Picasso.with(context).load(curr.getImageUrl()).into(viewHolder.tvImage);
+        //Picasso.with(context).load(curr.getImageUrl()).into(viewHolder.tvImage);
 
 
         return convertView;
@@ -72,14 +73,14 @@ public class VehicleAdapter<T extends Vehicle> extends ArrayAdapter {
         final TextView tvYear;
         final TextView tvCity;
         final TextView tvDetail;
-        final ImageView tvImage;
+        //final WebView tvImage;
 
         ViewHolder(View v) {
             this.tvModel = v.findViewById(R.id.txtModel);
             this.tvYear = v.findViewById(R.id.txtYear);
             this.tvCity = v.findViewById(R.id.txtCity);
             this.tvDetail = v.findViewById(R.id.txtDetail);
-            this.tvImage = v.findViewById(R.id.imgView);
+            //this.tvImage = v.findViewById(R.id.imgView);
         }
     }
 }

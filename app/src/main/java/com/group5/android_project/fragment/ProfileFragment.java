@@ -80,13 +80,6 @@ public class ProfileFragment extends Fragment {
         ListView vehicleListView = v.findViewById(R.id.lvVehicleListView);
 
         firstName.setText(user.getDisplayName());
-        //firstName.setText("Username");
-        try {
-            //TODO
-            Picasso.with(v.getContext()).load(user.getPhotoUrl()).into(userImage);
-        } catch (Exception e) {
-            Log.d(TAG, " user image null");
-        }
 
         try {
             adapter = new VehicleAdapter(getActivity().getApplicationContext(), R.layout.list_vehicle, vehicleList);

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.group5.android_project.fragment.ProfileFragment"
-    android:background="@color/colorPrimary">
+    android:background="#E6E6FA">
 
 
     <LinearLayout
@@ -15,7 +15,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
@@ -23,11 +22,12 @@
                 android:id="@+id/userImageView"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/profile_default" />
+                android:src="@drawable/logo" />
 
             <android.support.v7.widget.LinearLayoutCompat
+                android:layout_marginTop="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -37,6 +37,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="@string/hello"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="18sp"
@@ -46,6 +47,7 @@
                     android:id="@+id/txtFirstName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="FirstName"
                     android:textColor="@color/common_google_signin_btn_text_dark_focused"
                     android:textSize="18sp"
@@ -55,8 +57,10 @@
 
             <Button
                 android:id="@+id/signOutButton"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:background="#ADD8E6"
                 android:layout_alignParentRight="true"
                 android:text="Sign Out"
                 android:layout_marginRight="20dp"

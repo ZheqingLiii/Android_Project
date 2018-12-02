@@ -1,18 +1,23 @@
 package com.group5.android_project;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.JsonParser;
 import com.group5.android_project.fragment.PostFragment;
 import com.group5.android_project.fragment.ProfileFragment;
 import com.group5.android_project.fragment.SearchFragment;
@@ -47,10 +52,18 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
     private ViewPager viewPager;
     public static Vehicle postVehicle;
 
+    public static Context contextOfApplication;
+
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        contextOfApplication = getApplicationContext();
 
         mainVehicleList = new ArrayList<Vehicle>();
 
@@ -276,4 +289,14 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             return null;
         }
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+
 }
