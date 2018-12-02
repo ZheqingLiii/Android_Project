@@ -186,8 +186,6 @@ public class PostFragment extends Fragment {
             //TODO: get lat and lng
             String lat = "";
             String lng = "";
-//            postVehicle.setLat(lat);
-//            postVehicle.setLng(lng);
 
             String addressString = txtLocation.getText().toString();
             double[] latlong = new double[2];
@@ -199,6 +197,8 @@ public class PostFragment extends Fragment {
                     Address address = (Address) addressList.get(0);
                     lat = address.getLatitude() + "";
                     lng = address.getLongitude() + "";
+                    postVehicle.setLat(lat);
+                    postVehicle.setLng(lng);
 
                     //put postVehicle to main activity
                     MainActivity.postVehicle = postVehicle;
