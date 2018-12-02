@@ -235,11 +235,22 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     String price = String.valueOf(obj.getDouble("PricePerDay"));
                     String detail = obj.getString("Detail");
                     Integer veID = obj.getInt("CarID");
+                    String lat = obj.getString("lat");
+                    String lng = obj.getString("lng");
+                    String avail = (obj.getString("isAvailable"));
+
 
                     Vehicle curVe = new Vehicle(model, year, city, price, detail);
+                    if (avail.equals("true")) {
+                        curVe.setAvailable(true);
+                    } else {
+                        curVe.setAvailable(false);
+                    }
                     curVe.setStartDate(startDate);
                     curVe.setEndDate(endDate);
                     curVe.setVeID(veID);
+                    curVe.setLat(lat);
+                    curVe.setLng(lng);
 
                     mainVehicleList.add(curVe);
 
