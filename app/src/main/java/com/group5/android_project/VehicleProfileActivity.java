@@ -1,5 +1,6 @@
 package com.group5.android_project;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -14,6 +15,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -78,11 +81,11 @@ public class VehicleProfileActivity extends AppCompatActivity
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "CameraDemo");
 
-        if (!mediaStorageDir.exists()) {
+       /* if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
-        }
+        }*/
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         return new File(mediaStorageDir.getPath() + File.separator +
@@ -114,6 +117,13 @@ public class VehicleProfileActivity extends AppCompatActivity
 
         //imageSlider = new ImageSliderPagerAdapter(this, images);
         //viewPager.setAdapter(imageSlider);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            //takePictureButton.setEnabled(false);
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+
+
+        }
 
         //get values from intent
         profileVehicle = getIntent().getParcelableExtra("vehicle");
@@ -253,6 +263,7 @@ public class VehicleProfileActivity extends AppCompatActivity
 
     public void takePicture(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.d("Pic Log: ", "Application_ID" + BuildConfig.APPLICATION_ID);
         file = FileProvider.getUriForFile(VehicleProfileActivity.this, BuildConfig.APPLICATION_ID, getOutputMediaFile());
         Log.d("Pic Log: ", "uploaded started: " + file.getPath());
 
