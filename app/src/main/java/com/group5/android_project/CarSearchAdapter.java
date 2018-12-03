@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -47,7 +46,6 @@ public class CarSearchAdapter extends ArrayAdapter<String> {
         TextView carPrice = row.findViewById(R.id.carPrice);
         TextView carDistance = row.findViewById(R.id.distanceTextView);
 
-//        carImage.setBac
         String url = "http://18.219.38.137/home/team5/ftp/files/CarID" + ids.get(position).toString() + ".jpg";
         carImage.getSettings().setLoadWithOverviewMode(true);
         carImage.getSettings().setUseWideViewPort(true);

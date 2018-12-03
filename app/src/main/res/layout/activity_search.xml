@@ -85,7 +85,7 @@
         android:background="@color/colorTertiary"
         android:padding="16dp"
         android:translationZ="1dp"
-        android:visibility="gone">
+        android:visibility="">
 
         <LinearLayout
             android:id="@+id/locationLayout"
