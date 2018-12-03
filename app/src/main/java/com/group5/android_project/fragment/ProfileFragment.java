@@ -19,12 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.R;
-import com.group5.android_project.SessionActivity;
-import com.group5.android_project.SplashActivity;
-import com.group5.android_project.VehicleAdapter;
 import com.group5.android_project.Vehicle;
+import com.group5.android_project.VehicleAdapter;
 import com.group5.android_project.VehicleProfileActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -54,7 +51,8 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.signOut();
-                startActivity(new Intent(getActivity(), SplashActivity.class));
+//                startActivity(new Intent(getActivity(), SplashActivity.class));
+                getActivity().finish();
             }
         });
         return v;

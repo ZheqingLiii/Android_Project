@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -41,16 +41,20 @@ public class CarSearchAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = context.getLayoutInflater();
         View row = inflater.inflate(R.layout.car_search_list_item, null, true);
 
-        ImageView carImage = (ImageView) row.findViewById(R.id.carImage);
-        TextView carName = (TextView) row.findViewById(R.id.carName);
-        TextView carPrice = (TextView) row.findViewById(R.id.carPrice);
-        TextView carDistance = (TextView) row.findViewById(R.id.distanceTextView);
+        WebView carImage = row.findViewById(R.id.carImage);
+        TextView carName = row.findViewById(R.id.carName);
+        TextView carPrice = row.findViewById(R.id.carPrice);
+        TextView carDistance = row.findViewById(R.id.distanceTextView);
 
-//        carImage.setBac
+        String url = "http://18.219.38.137/home/team5/ftp/files/CarID" + ids.get(position).toString() + ".jpg";
+        carImage.getSettings().setLoadWithOverviewMode(true);
+        carImage.getSettings().setUseWideViewPort(true);
+        carImage.loadUrl(url);
+
         carName.setText(names.get(position));
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         carPrice.setText(currencyFormatter.format(prices.get(position)) + "/day");
-        double distance = Math.round(distances.get(position) * 10) / 10;
+        double distance = Math.round(distances.get(position) * 10) / 10.0;
         carDistance.setText(distance + "");
 
         return row;

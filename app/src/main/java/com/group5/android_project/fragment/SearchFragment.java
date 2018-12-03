@@ -1,6 +1,7 @@
 package com.group5.android_project.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -11,12 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.group5.android_project.CarSearchAdapter;
+import com.group5.android_project.CarShowPageActivity;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
@@ -26,7 +30,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,6 +45,8 @@ public class SearchFragment extends Fragment {
     ListView carListView;
     Button btnSearchStartDate;
     Button btnSearchEndDate;
+    Button searchButton;
+    EditText locationInput;
     public TextView txtsearchStartDate;
     public TextView txtsearchEndDate;
     public TextView txtsearchStartDate1;
@@ -66,13 +75,27 @@ public class SearchFragment extends Fragment {
         dropdownArrow = view.findViewById(R.id.dropdownArrow);
 
         locationTextView = view.findViewById(R.id.locationTextView);
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, 1); // set start date to tomorrow
         txtsearchStartDate = view.findViewById(R.id.txtStartDate);
-        txtsearchEndDate = view.findViewById(R.id.txtEndDate);
         txtsearchStartDate1 = view.findViewById(R.id.startDateTextView);
+        txtsearchStartDate.setText(dateFormatter.format(calendar.getTime()));
+        txtsearchStartDate1.setText(dateFormatter.format(calendar.getTime()));
+
+        calendar.add(Calendar.DATE, 5); // set end date to 6 days from now
+        txtsearchEndDate = view.findViewById(R.id.txtEndDate);
         txtsearchEndDate1 = view.findViewById(R.id.endDateTextView);
+        txtsearchEndDate.setText(dateFormatter.format(calendar.getTime()));
+        txtsearchEndDate1.setText(dateFormatter.format(calendar.getTime()));
 
         btnSearchStartDate = view.findViewById(R.id.btnStartDate);
         btnSearchEndDate = view.findViewById(R.id.btnEndDate);
+
+        searchButton = view.findViewById(R.id.searchButton);
+        locationInput = view.findViewById(R.id.locationInput);
 
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +128,19 @@ public class SearchFragment extends Fragment {
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
             }
         });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationTextView.setText(locationInput.getText().toString());
+                searchDropdown.setVisibility(View.GONE);
+                dropdownArrow.setText("\u25BC");
+                isDropdownActive = false;
+                search();
+            }
+        });
+
+        carListView = view.findViewById(R.id.carListView);
 
         search();
 
@@ -155,23 +191,23 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-
             CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
-            ListView carListView = view.findViewById(R.id.carListView);
             carListView.setAdapter(adapter);
             Log.d(TAG, "onPostExecute parameter is " + s);
+            carListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    int carId = carIdList.get(position);
+                    Intent intent = new Intent(getActivity(), CarShowPageActivity.class);
+                    intent.putExtra("carId", carId);
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override
         protected String doInBackground(String... strings) {
             String carList = Utils.downloadXML(strings[0]);
-
-//            ArrayList<Integer> carIdList = new ArrayList<Integer>();
-//            ArrayList<Double> carDistanceList = new ArrayList<Double>();
-//            ArrayList<String> carNameList = new ArrayList<String>();
-//            ArrayList<Double> carPriceList = new ArrayList<Double>();
-//            ArrayList<String> carImgURL = new ArrayList<String>();
 
             carIdList = new ArrayList<Integer>();
             carDistanceList = new ArrayList<Double>();

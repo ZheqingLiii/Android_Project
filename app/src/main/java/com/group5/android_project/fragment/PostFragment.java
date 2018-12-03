@@ -183,7 +183,6 @@ public class PostFragment extends Fragment {
             //postVehicle.setEndDate(endDate);
             postVehicle.setAvailable(avail);
 
-            //TODO: get lat and lng
             String lat = "";
             String lng = "";
 

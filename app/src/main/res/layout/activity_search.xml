@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.group5.android_project.fragment.SearchFragment"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimaryBackground">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/searchLayout"
@@ -104,6 +104,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/locationInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -140,7 +141,7 @@
 
             <TextView
                 android:id="@+id/txtStartDate"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:text="@string/availStartDate"
                 android:textColor="@android:color/white"
@@ -179,7 +180,7 @@
 
             <TextView
                 android:id="@+id/txtEndDate"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:text="@string/availEndDate"
                 android:textColor="@android:color/white"
