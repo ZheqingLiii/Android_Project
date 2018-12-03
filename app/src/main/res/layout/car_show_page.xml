@@ -3,10 +3,19 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/colorPrimaryBackground">
 
-    <WebView
-        android:id="@+id/carImage"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp" />
+    <RelativeLayout
+        android:id="@+id/carImageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <WebView
+            android:id="@+id/carImage"
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/carPrice"
@@ -14,14 +23,14 @@
         android:layout_height="wrap_content"
         android:textSize="18dp"
         android:text="Price.../day"
-        android:layout_below="@id/carImage"
-        android:layout_alignRight="@id/carImage"/>
+        android:layout_below="@id/carImageLayout"
+        android:layout_alignRight="@id/carImageLayout"/>
 
     <TextView
         android:id="@+id/carName"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/carImage"
+        android:layout_below="@id/carImageLayout"
         android:textSize="22dp"
         android:textStyle="bold"
         android:text="Car Name..." />
