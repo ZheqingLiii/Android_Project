@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,8 +21,10 @@ import java.text.NumberFormat;
 public class CarShowPageActivity extends AppCompatActivity {
     int id;
     public WebView carImage;
-    public TextView carPrice, carName, txtStartDate, txtEndDate, carDescription;
+    public TextView carPrice, carName, txtStartDate, txtEndDate, carDescription, contactButton;
     String description;
+
+    public static FirebaseUser mainUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +37,7 @@ public class CarShowPageActivity extends AppCompatActivity {
         txtStartDate = (TextView) findViewById(R.id.txtStartDate);
         txtEndDate = (TextView) findViewById(R.id.txtEndDate);
         carDescription = (TextView) findViewById(R.id.carDescription);
+        contactButton = (TextView) findViewById(R.id.contactButton);
 
         Intent i = getIntent();
         id = getIntent().getIntExtra("carId", 0);
@@ -46,10 +52,21 @@ public class CarShowPageActivity extends AppCompatActivity {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         carPrice.setText(currencyFormatter.format(getIntent().getDoubleExtra("price", -1)) + "/day");
 
-//        String noPhoto = getIntent().getStringExtra("image");
         carImage.getSettings().setLoadWithOverviewMode(true);
         carImage.getSettings().setUseWideViewPort(true);
         carImage.loadUrl(getIntent().getStringExtra("image"));
+
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"email@email.com"});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Interested in " + carName.getText());
+
+                startActivity(Intent.createChooser(intent, "Send Email"));
+            }
+        });
     }
 
     public class GetVehicleInfo extends AsyncTask<String, Void, String> {

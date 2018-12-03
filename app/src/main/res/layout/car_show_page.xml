@@ -26,17 +26,27 @@
         android:textStyle="bold"
         android:text="Car Name..." />
 
+    <TextView
+        android:id="@+id/contactButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_below="@id/carName"
+        android:textColor="@android:color/holo_blue_light"
+        android:textStyle="bold"
+        android:text="Contact Owner" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/carName"
+        android:layout_below="@id/contactButton"
         android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:id="@+id/startDateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/carName"
+        android:layout_below="@id/contactButton"
         android:orientation="horizontal">
 
         <TextView
