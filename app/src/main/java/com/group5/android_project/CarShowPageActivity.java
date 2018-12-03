@@ -19,6 +19,7 @@ public class CarShowPageActivity extends AppCompatActivity {
     int id;
     public WebView carImage;
     public TextView carPrice, carName, txtStartDate, txtEndDate, carDescription;
+    String description;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class CarShowPageActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            carDescription.setText(description);
             Log.d(TAG, "onPostExecute parameter is " + s);
         }
 
@@ -68,7 +70,7 @@ public class CarShowPageActivity extends AppCompatActivity {
                 JSONArray carArray = null;
                 carArray = new JSONArray(carInfo);
                 JSONObject car = carArray.getJSONObject(0);
-                carDescription.setText(car.getString("Detail"));
+                description = car.getString("Detail");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
