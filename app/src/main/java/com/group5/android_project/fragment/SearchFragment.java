@@ -1,6 +1,7 @@
 package com.group5.android_project.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.group5.android_project.CarSearchAdapter;
+import com.group5.android_project.CarShowPageActivity;
 import com.group5.android_project.MainActivity;
 import com.group5.android_project.MainDatePickerFragment;
 import com.group5.android_project.R;
@@ -196,8 +198,9 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     int carId = carIdList.get(position);
-//                    startActivity(new Intent(getActivity().this, ));
-//                    startActivity(new Intent(SplashActivity.this, SessionActivity.class));
+                    Intent intent = new Intent(getActivity(), CarShowPageActivity.class);
+                    intent.putExtra("carId", carId);
+                    startActivity(intent);
                 }
             });
         }
