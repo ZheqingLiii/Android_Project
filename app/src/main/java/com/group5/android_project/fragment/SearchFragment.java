@@ -205,6 +205,7 @@ public class SearchFragment extends Fragment {
                     intent.putExtra("endDate", txtsearchEndDate.getText().toString());
                     intent.putExtra("name", carNameList.get(position));
                     intent.putExtra("price", carPriceList.get(position));
+                    intent.putExtra("image", carImgURL.get(position));
                     startActivity(intent);
                 }
             });

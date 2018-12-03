@@ -46,7 +46,8 @@ public class CarSearchAdapter extends ArrayAdapter<String> {
         TextView carPrice = row.findViewById(R.id.carPrice);
         TextView carDistance = row.findViewById(R.id.distanceTextView);
 
-        String url = "http://18.219.38.137/home/team5/ftp/files/CarID" + ids.get(position).toString() + ".jpg";
+        String url = imgURLs.get(position);
+//        String url = "https://www.affordableautoselgin.com/images/no-photo-car.jpg";
         carImage.getSettings().setLoadWithOverviewMode(true);
         carImage.getSettings().setUseWideViewPort(true);
         carImage.loadUrl(url);
