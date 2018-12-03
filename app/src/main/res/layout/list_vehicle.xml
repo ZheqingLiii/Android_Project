@@ -30,7 +30,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
                 android:text="BMW ActiveHybrid X6"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@android:color/white"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:text="2018"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@android:color/white"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="San Jose"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@android:color/white"
                     android:textSize="16dp"
                     android:textStyle="normal" />
 
@@ -74,7 +74,7 @@
                 android:layout_marginTop="4dp"
                 android:maxLines="4"
                 android:text="22 MPG, Regular Gas, 2 doors, 4 seats, Automatic transmission, Audio input, Convertible, USB input, Heated seats"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@android:color/white"
                 android:textSize="15dp"
                 android:textStyle="normal" />
         </LinearLayout>
