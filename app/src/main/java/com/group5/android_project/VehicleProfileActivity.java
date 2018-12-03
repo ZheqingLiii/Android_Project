@@ -141,7 +141,7 @@ public class VehicleProfileActivity extends AppCompatActivity
 
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
-        if (profileVehicle.getImageUrl() != null && profileVehicle.getImageUrl().length() > 1) {
+        if (profileVehicle.getImageUrl() != null && profileVehicle.getImageUrl().length() > 10) {
             String setUrl = "http://18.219.38.137/home/team5/ftp/files/CarID" + profileVehicle.getVeID().toString() + ".jpg";
             webView.loadUrl(setUrl);
         } else {
@@ -322,7 +322,8 @@ public class VehicleProfileActivity extends AppCompatActivity
                                     + "&Detail=" + detail.replaceAll("\\s", "")
                                     + "&isAvailable=" + available
                                     + "&lat=" + profileVehicle.getLat()
-                                    + "&lng=" + profileVehicle.getLng();
+                                    + "&lng=" + profileVehicle.getLng()
+                                    + "&CarPhotoURL=" + profileVehicle.getImageUrl();
                             Log.d(TAG, "onClick: url " + url);
                             updateVehicleInfo.execute(url);
 
