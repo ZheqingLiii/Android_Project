@@ -45,6 +45,7 @@
             android:label="@string/title_session_page">
         </activity>
         <activity android:name=".VehicleProfileActivity" />
+        <activity android:name=".CarShowPageActivity" />
 
 
         <provider

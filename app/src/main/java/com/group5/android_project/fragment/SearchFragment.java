@@ -96,6 +96,7 @@ public class SearchFragment extends Fragment {
 
         searchButton = view.findViewById(R.id.searchButton);
         locationInput = view.findViewById(R.id.locationInput);
+        locationInput.setText(locationTextView.getText().toString());
 
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
