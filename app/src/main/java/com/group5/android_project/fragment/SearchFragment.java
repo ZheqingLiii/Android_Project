@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -137,6 +138,8 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        carListView = view.findViewById(R.id.carListView);
+
         search();
 
         return view;
@@ -187,9 +190,16 @@ public class SearchFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
-            ListView carListView = view.findViewById(R.id.carListView);
             carListView.setAdapter(adapter);
             Log.d(TAG, "onPostExecute parameter is " + s);
+            carListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    int carId = carIdList.get(position);
+//                    startActivity(new Intent(getActivity().this, ));
+//                    startActivity(new Intent(SplashActivity.this, SessionActivity.class));
+                }
+            });
         }
 
         @Override
