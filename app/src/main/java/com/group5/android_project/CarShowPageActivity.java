@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ public class CarShowPageActivity extends AppCompatActivity {
     public WebView carImage;
     public TextView carPrice, carName, txtStartDate, txtEndDate, carDescription, contactButton;
     String description, ownerEmail;
+    Button checkoutButton;
 
     public static FirebaseUser mainUser;
 
@@ -55,6 +57,23 @@ public class CarShowPageActivity extends AppCompatActivity {
         carImage.getSettings().setLoadWithOverviewMode(true);
         carImage.getSettings().setUseWideViewPort(true);
         carImage.loadUrl(getIntent().getStringExtra("image"));
+
+        checkoutButton = (Button) findViewById(R.id.checkoutButton);
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openEmail();
+            }
+        });
+    }
+
+    void openEmail() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {ownerEmail});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Interested in " + carName.getText());
+
+        startActivity(Intent.createChooser(intent, "Send Email"));
     }
 
     public class GetVehicleInfo extends AsyncTask<String, Void, String> {
@@ -68,12 +87,7 @@ public class CarShowPageActivity extends AppCompatActivity {
             contactButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    intent.putExtra(Intent.EXTRA_EMAIL, new String[] {ownerEmail});
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Interested in " + carName.getText());
-
-                    startActivity(Intent.createChooser(intent, "Send Email"));
+                    openEmail();
                 }
             });
 
