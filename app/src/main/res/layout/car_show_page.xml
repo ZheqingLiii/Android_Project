@@ -12,17 +12,17 @@
         android:id="@+id/carPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:text="Price.../day"
         android:layout_below="@id/carImage"
         android:layout_alignRight="@id/carImage"/>
 
     <TextView
         android:id="@+id/carName"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/carImage"
-        android:textSize="24dp"
+        android:textSize="22dp"
         android:textStyle="bold"
         android:text="Car Name..." />
 

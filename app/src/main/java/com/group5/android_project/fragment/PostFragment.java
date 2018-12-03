@@ -214,7 +214,8 @@ public class PostFragment extends Fragment {
                             + "&Detail=" + postVehicle.getDetail().replaceAll("\\s", "")
                             + "&isAvailable=" + String.valueOf(postVehicle.isAvailable())
                             + "&lat=" + lat
-                            + "&lng=" + lng;
+                            + "&lng=" + lng
+                            + "&CarPhotoURL=https://www.affordableautoselgin.com/images/no-photo-car.jpg";
 
                     Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
                     PutVehicleInfo putVehicleInfo = new PutVehicleInfo();
