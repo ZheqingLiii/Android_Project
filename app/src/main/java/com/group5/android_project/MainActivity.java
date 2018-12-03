@@ -238,6 +238,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     String lat = obj.getString("lat");
                     String lng = obj.getString("lng");
                     String avail = (obj.getString("isAvailable"));
+                    String imageUrl = obj.getString("CarPhotoURL");
 
 
                     Vehicle curVe = new Vehicle(model, year, city, price, detail);
@@ -251,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
                     curVe.setVeID(veID);
                     curVe.setLat(lat);
                     curVe.setLng(lng);
+                    curVe.setImageUrl(imageUrl);
 
                     mainVehicleList.add(curVe);
 
