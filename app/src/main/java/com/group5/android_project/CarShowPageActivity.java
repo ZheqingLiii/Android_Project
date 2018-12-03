@@ -46,7 +46,7 @@ public class CarShowPageActivity extends AppCompatActivity {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         carPrice.setText(currencyFormatter.format(getIntent().getDoubleExtra("price", -1)) + "/day");
 
-        String noPhoto = getIntent().getStringExtra("image");
+//        String noPhoto = getIntent().getStringExtra("image");
         carImage.getSettings().setLoadWithOverviewMode(true);
         carImage.getSettings().setUseWideViewPort(true);
         carImage.loadUrl(getIntent().getStringExtra("image"));

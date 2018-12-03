@@ -136,8 +136,7 @@ public class VehicleProfileActivity extends AppCompatActivity
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         if (profileVehicle.getImageUrl() != null && profileVehicle.getImageUrl().length() > 10) {
-            String setUrl = "http://18.219.38.137/home/team5/ftp/files/CarID" + profileVehicle.getVeID().toString() + ".jpg";
-            webView.loadUrl(setUrl);
+            webView.loadUrl(profileVehicle.getImageUrl());
         } else {
             webView.loadUrl("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdAGzADdM8qUH4OmLwHy10u9vXicBdaHPpOCj-G4XWNdWl38Oa");
         }
