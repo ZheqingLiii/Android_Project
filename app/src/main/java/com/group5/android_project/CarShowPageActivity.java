@@ -22,7 +22,7 @@ public class CarShowPageActivity extends AppCompatActivity {
     int id;
     public WebView carImage;
     public TextView carPrice, carName, txtStartDate, txtEndDate, carDescription, contactButton;
-    String description;
+    String description, ownerEmail;
 
     public static FirebaseUser mainUser;
 
@@ -55,18 +55,6 @@ public class CarShowPageActivity extends AppCompatActivity {
         carImage.getSettings().setLoadWithOverviewMode(true);
         carImage.getSettings().setUseWideViewPort(true);
         carImage.loadUrl(getIntent().getStringExtra("image"));
-
-        contactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"email@email.com"});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Interested in " + carName.getText());
-
-                startActivity(Intent.createChooser(intent, "Send Email"));
-            }
-        });
     }
 
     public class GetVehicleInfo extends AsyncTask<String, Void, String> {
@@ -76,6 +64,19 @@ public class CarShowPageActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             carDescription.setText(description);
+
+            contactButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_EMAIL, new String[] {ownerEmail});
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Interested in " + carName.getText());
+
+                    startActivity(Intent.createChooser(intent, "Send Email"));
+                }
+            });
+
             Log.d(TAG, "onPostExecute parameter is " + s);
         }
 
@@ -87,7 +88,9 @@ public class CarShowPageActivity extends AppCompatActivity {
                 JSONArray carArray = null;
                 carArray = new JSONArray(carInfo);
                 JSONObject car = carArray.getJSONObject(0);
+
                 description = car.getString("Detail");
+                ownerEmail = car.getString("OwnerEmail");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
