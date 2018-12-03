@@ -45,10 +45,10 @@ public class CarShowPageActivity extends AppCompatActivity {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         carPrice.setText(currencyFormatter.format(getIntent().getDoubleExtra("price", -1)) + "/day");
 
-//        String url = "http://18.219.38.137/home/team5/ftp/files/CarID" + id + ".jpg";
-//        carImage.getSettings().setLoadWithOverviewMode(true);
-//        carImage.getSettings().setUseWideViewPort(true);
-//        carImage.loadUrl(url);
+        String url = "http://18.219.38.137/home/team5/ftp/files/CarID" + id + ".jpg";
+        carImage.getSettings().setLoadWithOverviewMode(true);
+        carImage.getSettings().setUseWideViewPort(true);
+        carImage.loadUrl(url);
     }
 
     public class GetVehicleInfo extends AsyncTask<String, Void, String> {
