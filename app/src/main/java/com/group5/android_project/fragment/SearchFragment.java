@@ -201,6 +201,10 @@ public class SearchFragment extends Fragment {
                     int carId = carIdList.get(position);
                     Intent intent = new Intent(getActivity(), CarShowPageActivity.class);
                     intent.putExtra("carId", carId);
+                    intent.putExtra("startDate", txtsearchStartDate.getText().toString());
+                    intent.putExtra("endDate", txtsearchEndDate.getText().toString());
+                    intent.putExtra("name", carNameList.get(position));
+                    intent.putExtra("price", carPriceList.get(position));
                     startActivity(intent);
                 }
             });

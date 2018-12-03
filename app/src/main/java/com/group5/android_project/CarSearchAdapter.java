@@ -52,8 +52,10 @@ public class CarSearchAdapter extends ArrayAdapter<String> {
         carImage.loadUrl(url);
 
         carName.setText(names.get(position));
+
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
         carPrice.setText(currencyFormatter.format(prices.get(position)) + "/day");
+
         double distance = Math.round(distances.get(position) * 10) / 10.0;
         carDistance.setText(distance + "");
 
