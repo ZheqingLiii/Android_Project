@@ -204,6 +204,7 @@ public class PostFragment extends Fragment {
 
                     // api
                     //a = a.replaceAll("\\s","");
+                    String userEmail = MainActivity.mainUser.getEmail();
                     String urlPath = "http://ec2-18-219-38-137.us-east-2.compute.amazonaws.com:3000/putCarInfo?"
                             + "Model=" + postVehicle.getModel().replaceAll("\\s", "")
                             + "&Year=" + postVehicle.getYear().replaceAll("\\s", "")
@@ -215,7 +216,8 @@ public class PostFragment extends Fragment {
                             + "&isAvailable=" + String.valueOf(postVehicle.isAvailable())
                             + "&lat=" + lat
                             + "&lng=" + lng
-                            + "&CarPhotoURL=https://www.affordableautoselgin.com/images/no-photo-car.jpg";
+                            + "&CarPhotoURL=https://www.affordableautoselgin.com/images/no-photo-car.jpg"
+                            + "&OwnerEmail=" + userEmail;
 
                     Log.d(TAG, "PutVehicleInfo: URL " + urlPath);
                     PutVehicleInfo putVehicleInfo = new PutVehicleInfo();
