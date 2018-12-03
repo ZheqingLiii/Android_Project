@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -38,6 +42,8 @@ public class SearchFragment extends Fragment {
     ListView carListView;
     Button btnSearchStartDate;
     Button btnSearchEndDate;
+    Button searchButton;
+    EditText locationInput;
     public TextView txtsearchStartDate;
     public TextView txtsearchEndDate;
     public TextView txtsearchStartDate1;
@@ -66,13 +72,22 @@ public class SearchFragment extends Fragment {
         dropdownArrow = view.findViewById(R.id.dropdownArrow);
 
         locationTextView = view.findViewById(R.id.locationTextView);
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, 1); // set start date to tomorrow
         txtsearchStartDate = view.findViewById(R.id.txtStartDate);
+        txtsearchStartDate.setText(dateFormatter.format(calendar.getTime()));
         txtsearchEndDate = view.findViewById(R.id.txtEndDate);
         txtsearchStartDate1 = view.findViewById(R.id.startDateTextView);
         txtsearchEndDate1 = view.findViewById(R.id.endDateTextView);
 
         btnSearchStartDate = view.findViewById(R.id.btnStartDate);
         btnSearchEndDate = view.findViewById(R.id.btnEndDate);
+
+        searchButton = view.findViewById(R.id.searchButton);
+        locationInput = view.findViewById(R.id.locationInput);
 
         searchLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +118,17 @@ public class SearchFragment extends Fragment {
                 MainActivity.mainflag = "searchEndDate";
                 MainDatePickerFragment dateFragment = new MainDatePickerFragment();
                 dateFragment.show(getFragmentManager(), "mainDatePicker");
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationTextView.setText(locationInput.getText().toString());
+                searchDropdown.setVisibility(View.GONE);
+                dropdownArrow.setText("\u25BC");
+                isDropdownActive = false;
+                search();
             }
         });
 
@@ -155,8 +181,6 @@ public class SearchFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-//            super.onPostExecute(s);
-
             CarSearchAdapter adapter = new CarSearchAdapter(ctx, carIdList, carDistanceList, carNameList, carPriceList, carImgURL);
             ListView carListView = view.findViewById(R.id.carListView);
             carListView.setAdapter(adapter);
@@ -166,12 +190,6 @@ public class SearchFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             String carList = Utils.downloadXML(strings[0]);
-
-//            ArrayList<Integer> carIdList = new ArrayList<Integer>();
-//            ArrayList<Double> carDistanceList = new ArrayList<Double>();
-//            ArrayList<String> carNameList = new ArrayList<String>();
-//            ArrayList<Double> carPriceList = new ArrayList<Double>();
-//            ArrayList<String> carImgURL = new ArrayList<String>();
 
             carIdList = new ArrayList<Integer>();
             carDistanceList = new ArrayList<Double>();
