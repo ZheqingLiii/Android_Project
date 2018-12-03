@@ -73,15 +73,20 @@ public class SearchFragment extends Fragment {
 
         locationTextView = view.findViewById(R.id.locationTextView);
 
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.DATE, 1); // set start date to tomorrow
         txtsearchStartDate = view.findViewById(R.id.txtStartDate);
-        txtsearchStartDate.setText(dateFormatter.format(calendar.getTime()));
-        txtsearchEndDate = view.findViewById(R.id.txtEndDate);
         txtsearchStartDate1 = view.findViewById(R.id.startDateTextView);
+        txtsearchStartDate.setText(dateFormatter.format(calendar.getTime()));
+        txtsearchStartDate1.setText(dateFormatter.format(calendar.getTime()));
+
+        calendar.add(Calendar.DATE, 5); // set end date to 6 days from now
+        txtsearchEndDate = view.findViewById(R.id.txtEndDate);
         txtsearchEndDate1 = view.findViewById(R.id.endDateTextView);
+        txtsearchEndDate.setText(dateFormatter.format(calendar.getTime()));
+        txtsearchEndDate1.setText(dateFormatter.format(calendar.getTime()));
 
         btnSearchStartDate = view.findViewById(R.id.btnStartDate);
         btnSearchEndDate = view.findViewById(R.id.btnEndDate);
