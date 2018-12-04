@@ -112,9 +112,9 @@ app.get('/putCarInfo', function (request, response){
 
    // config for your dat 
   var con = mysql.createConnection({
-        host: "rwandasos.c0k8vg0pevvr.us-east-2.rds.amazonaws.com",
-        user: "sgahima",
-        password: "KW220987",
+        host: "REDACTED",
+        user: "REDACTED",
+        password: "REDACTED",
         database: "COEN268_Project"
         });
         
@@ -170,9 +170,9 @@ app.get('/updateCarInfo', function (request, response){
   var parsed_parameter1___ = parsed_parameter__[1].split('=');
     // config for your dat
   var con = mysql.createConnection({
-        host: "rwandasos.c0k8vg0pevvr.us-east-2.rds.amazonaws.com",
-        user: "sgahima",
-        password: "KW220987",
+        host: "REDACTED",
+        user: "REDACTED",
+        password: "REDACTED",
         database: "COEN268_Project"
         });
   console.log('hereUpdate2');
@@ -233,9 +233,9 @@ app.get('/updateCarInfoBulk', function (request, response){
  var parsed_parameter9___ = parsed_parameter__[9].split('=');
     // config for your dat
  var con = mysql.createConnection({
-        host: "rwandasos.c0k8vg0pevvr.us-east-2.rds.amazonaws.com",
-        user: "sgahima",
-        password: "KW220987",
+        host: "REDACTED",
+        user: "REDACTED",
+        password: "REDACTED",
         database: "COEN268_Project"
         });
  console.log('hereUpdate2');
@@ -286,9 +286,9 @@ app.get('/deleteCarInfo', function (request, response){
 
     // config for your dat
  var con = mysql.createConnection({
-        host: "rwandasos.c0k8vg0pevvr.us-east-2.rds.amazonaws.com",
-        user: "sgahima",
-        password: "KW220987",
+        host: "REDACTED",
+        user: "REDACTED",
+        password: "REDACTED",
         database: "COEN268_Project"
         });
  console.log('hereDelete2');
@@ -334,9 +334,9 @@ app.get('/getCarsByLocation', function (request, response){
 
     // config for your dat
   var con = mysql.createConnection({
-        host: "rwandasos.c0k8vg0pevvr.us-east-2.rds.amazonaws.com",
-        user: "sgahima",
-        password: "KW220987",
+        host: "REDACTED",
+        user: "REDACTED",
+        password: "REDACTED",
         database: "COEN268_Project"
         });
   console.log('heregetCarsByLocation');
@@ -405,9 +405,9 @@ app.get('/getCarsByKey', function (request, response){
  console.log('Inputs: ' + Key_Value0___[0] + '&' + Key_Value0___[1]);
     // config for your dat
  var con = mysql.createConnection({
-        host: "rwandasos.c0k8vg0pevvr.us-east-2.rds.amazonaws.com",
-        user: "sgahima",
-        password: "KW220987",
+        host: "REDACTED",
+        user: "REDACTED",
+        password: "REDACTED",
         database: "COEN268_Project"
         });
  console.log('heregetCarsByKey');
