@@ -1,5 +1,7 @@
 # Rent My Car
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/69d3b12e64494f62a742b050558322d2)](https://app.codacy.com/app/ZheqingLiii/RentMyCar?utm_source=github.com&utm_medium=referral&utm_content=ZheqingLiii/RentMyCar&utm_campaign=Badge_Grade_Dashboard)
+
 ## Introduction
 Rent My Car is an Android application that allows you to search for cars in your area that are available for rent, The application connects you to the owner if the car and allows you to contact them in order to meet their lease terms.
 
